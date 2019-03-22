@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Home from './Home';
+import Survey from './Survey';
 
 const style = {
   paddingTop: '10px'
@@ -20,8 +21,9 @@ const App = () => {
       </AppBar>
 
       <div style={style}>
-        <Route path="/" exact render={({ location }) => {
-          return <Home/>;
+        <Route path="/" exact render={() => <Home/>} />
+        <Route path="/survey/:id" exact render={() => {
+          return <Survey/>
         }} />
       </div>
     </div>

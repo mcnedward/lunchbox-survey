@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +9,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { fetchSurveys } from '../actions/surveyAction';
+import { getAllSurveys } from '../actions/surveyAction';
 
 const styles = theme => ({
   emptyStyle: {
@@ -25,7 +26,7 @@ class Home extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchSurveys());
+    dispatch(getAllSurveys());
   }
 
   render() {
@@ -39,8 +40,9 @@ class Home extends React.Component {
     } else {
       let items = [];
       for (let survey of surveys) {
+        let to = `/survey/${survey.id}`;
         let el = (
-          <ListItem button key={survey.id}>
+          <ListItem button component={Link} to={to} key={survey.id}>
             <ListItemText primary={survey.name} />
           </ListItem>
         );
