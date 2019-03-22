@@ -1,14 +1,29 @@
 import {
   GET_ALL_SURVEYS_SUCCESS,
   GET_SURVEY_SUCCESS
-} from '../constants/actions-types';
-import Survey from '../models/survey';
+} from "../constants/actions-types";
+import Survey from "../models/survey";
+import { Question, QuestionTypes } from "../models/question";
+
+function createSurvey(id, name) {
+  let questions = [];
+  for (let i = 0; i < 6; i++) {
+    if (i < 2) {
+      questions.push(new Question(QuestionTypes.Text, 'Tell me more'));
+    } else if (i < 4) {
+      questions.push(new Question(QuestionTypes.Choice, 'Pick one', ['Blue', 'Red', 'Green']));
+    } else {
+      questions.push(new Question(QuestionTypes.Bool, 'Yes or No?'));
+    }
+  }
+  return new Survey(id, name, questions);
+}
 
 async function fetchSurveys() {
   const mockData = [
-    new Survey(1, 'First Survey', []),
-    new Survey(2, 'Second Survey', []),
-    new Survey(3, 'Third Survey', [])
+    createSurvey(1, "First Survey"),
+    createSurvey(2, "Second Survey"),
+    createSurvey(3, "Third Survey")
   ];
   return new Promise((resolve, reject) => resolve(mockData));
 }
@@ -23,7 +38,7 @@ export function getAllSurveys() {
     };
 
     dispatch(action);
-  }
+  };
 }
 
 export function getSurveyById(id) {
@@ -34,8 +49,8 @@ export function getSurveyById(id) {
     let action = {
       type: GET_SURVEY_SUCCESS,
       data: survey
-    }
+    };
 
     dispatch(action);
-  }
+  };
 }

@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 import { getSurveyById } from "../actions/surveyAction";
+import Question from "./Question";
 
 const styles = theme => ({
   card: {
@@ -18,13 +19,36 @@ const styles = theme => ({
   },
   emptyStyle: {
     padding: theme.spacing.unit * 2
+  },
+  actions: {
+    display: "flex",
+    justifyContent: "space-between"
   }
 });
 
 class Survey extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.nextQuestion = this.nextQuestion.bind(this);
+  }
+
   componentDidMount() {
     const { dispatch, id } = this.props;
     dispatch(getSurveyById(+id));
+  }
+
+  previousQuestion() {
+    // const { survey } = this.props;
+    // survey.nextQuestion();
+
+    // this.setState({ survey });
+  }
+  nextQuestion() {
+    const { survey } = this.props;
+    survey.nextQuestion();
+
+    this.setState({ survey });
   }
 
   render() {
@@ -55,15 +79,19 @@ class Survey extends React.Component {
   buildCard() {
     const { classes, survey } = this.props;
 
+    let question = survey.getCurrentQuestion();
+
     return (
       <Card className={classes.card}>
         <CardContent>
           <Typography color="textSecondary" gutterBottom>
             {survey.name}
           </Typography>
+          <Question question={question} />
         </CardContent>
-        <CardActions>
-          <Button size="small">Submit</Button>
+        <CardActions className={classes.actions}>
+          <Button size="small" onClick={this.previousQuestion}>Back</Button>
+          <Button size="small" onClick={this.nextQuestion}>Next</Button>
         </CardActions>
       </Card>
     );
