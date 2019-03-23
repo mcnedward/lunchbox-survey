@@ -9,7 +9,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { getAllSurveys } from '../actions/surveyAction';
+import { getAllSurveys } from '../../actions/surveyAction';
 
 const styles = theme => ({
   emptyStyle: {

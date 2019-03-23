@@ -3,8 +3,8 @@ import { Route } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Home from './Home';
-import Survey from './Survey';
+import Home from './survey/Home';
+import Survey from './survey/Survey';
 
 const style = {
   paddingTop: '10px'

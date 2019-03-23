@@ -15,7 +15,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Icon from '@material-ui/core/Icon';
 import { withSnackbar } from 'notistack';
 
-import { getSurveyById } from "../actions/surveyAction";
+import { getSurveyById } from "../../actions/surveyAction";
 import Question from "./Question";
 
 const styles = theme => ({
