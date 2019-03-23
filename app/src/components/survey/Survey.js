@@ -38,6 +38,9 @@ const styles = theme => ({
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
+  },
+  btnReturn: {
+    marginTop:  theme.spacing.unit * 2
   }
 });
 
@@ -106,6 +109,9 @@ class Survey extends React.Component {
           <Grid container justify="center" spacing={Number("16")}>
             <Grid item>
               <Paper className={classes.paperStyle}>{contents}</Paper>
+              <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
+                Return to home
+              </Button>
             </Grid>
           </Grid>
         </Grid>
@@ -179,9 +185,6 @@ class Survey extends React.Component {
           <Typography color="textPrimary" variant="h6" gutterBottom>
             Thank you for completing the survey!
           </Typography>
-          <Button component={Link} to="/" color="primary" size="small">
-            Return to home
-          </Button>
         </CardContent>
       </Card>
     )
