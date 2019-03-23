@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import SurveyHome from './survey/SurveyHome';
 import Survey from './survey/Survey';
+import SurveyorHome from './surveyor/SurveyorHome';
 
 const style = {
   paddingTop: '10px'
@@ -23,6 +24,7 @@ const App = () => {
       <div style={style}>
         <Route path="/" exact component={SurveyHome} />
         <Route path="/survey/:id" exact component={Survey} />
+        <Route path="/surveyor/" exact component={SurveyorHome} />
       </div>
     </div>
   )
