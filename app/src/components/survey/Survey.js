@@ -40,7 +40,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
   },
   btnReturn: {
-    marginTop:  theme.spacing.unit * 2
+    marginTop: theme.spacing.unit * 2
   }
 });
 
@@ -158,14 +158,14 @@ class Survey extends React.Component {
           nextButton={
             <Button size="small" onClick={this.nextQuestion} disabled={currentStep === numberOfQuestions - 1}>
               Next
-            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+              {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
             </Button>
           }
           backButton={
             <Button size="small" onClick={this.previousQuestion} disabled={currentStep === 0}>
               {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
               Back
-          </Button>
+            </Button>
           }
         />
         {submitButton}

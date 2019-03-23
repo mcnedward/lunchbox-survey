@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import SurveyHome from './survey/SurveyHome';
 import Survey from './survey/Survey';
 import SurveyorHome from './surveyor/SurveyorHome';
+import CreateSurvey from './surveyor/CreateSurvey';
 
 const style = {
   paddingTop: '10px'
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/" exact component={SurveyHome} />
         <Route path="/survey/:id" exact component={Survey} />
         <Route path="/surveyor/" exact component={SurveyorHome} />
+        <Route path="/surveyor/surveys" exact component={CreateSurvey} />
       </div>
     </div>
   )
