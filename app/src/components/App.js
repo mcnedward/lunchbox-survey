@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Home from './survey/Home';
+import SurveyHome from './survey/SurveyHome';
 import Survey from './survey/Survey';
 
 const style = {
@@ -21,10 +21,8 @@ const App = () => {
       </AppBar>
 
       <div style={style}>
-        <Route path="/" exact render={() => <Home/>} />
-        <Route path="/survey/:id" exact render={() => {
-          return <Survey/>
-        }} />
+        <Route path="/" exact component={SurveyHome} />
+        <Route path="/survey/:id" exact component={Survey} />
       </div>
     </div>
   )

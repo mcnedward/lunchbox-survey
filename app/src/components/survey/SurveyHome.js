@@ -22,7 +22,7 @@ const styles = theme => ({
   }
 })
 
-class Home extends React.Component {
+class SurveyHome extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -76,4 +76,4 @@ function mapStateToProps(state, ownProps) {
   return { surveys: surveyState.surveys };
 }
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(Home)));
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(SurveyHome)));
