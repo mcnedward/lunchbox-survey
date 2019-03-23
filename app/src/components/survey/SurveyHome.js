@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
 import Grid from '@material-ui/core/Grid';
+import Typography from "@material-ui/core/Typography";
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,7 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { getAllSurveys } from '../../actions/surveyAction';
 
 const styles = theme => ({
-  emptyStyle: {
+  padding: {
     padding: theme.spacing.unit * 2
   },
   listStyle: {
@@ -30,29 +31,23 @@ class SurveyHome extends React.Component {
   }
 
   render() {
-    const { classes, surveys } = this.props;
+    let { classes, surveys } = this.props;
 
-    let contents;
-    if (surveys == null || surveys.length === 0) {
-      contents = (
-        <h3 className={classes.emptyStyle}>No surveys yet!</h3>
+    if (surveys == null) surveys = [];
+
+    let title = surveys.length === 0 ?
+      'No surveys yet!' :
+      'Please select a survey to start';
+
+    let items = [];
+    for (let survey of surveys) {
+      let to = `/survey/${survey.id}`;
+      let el = (
+        <ListItem button component={Link} to={to} key={survey.id}>
+          <ListItemText primary={survey.name} />
+        </ListItem>
       );
-    } else {
-      let items = [];
-      for (let survey of surveys) {
-        let to = `/survey/${survey.id}`;
-        let el = (
-          <ListItem button component={Link} to={to} key={survey.id}>
-            <ListItemText primary={survey.name} />
-          </ListItem>
-        );
-        items.push(el);
-      }
-      contents = (
-        <List component="nav">
-          {items}
-        </List>
-      )
+      items.push(el);
     }
 
     return (
@@ -61,7 +56,12 @@ class SurveyHome extends React.Component {
           <Grid container justify="center" spacing={Number('16')}>
             <Grid item>
               <Paper className={classes.paperStyle}>
-                {contents}
+                <Typography color="primary" variant="h5" className={classes.padding}>
+                  {title}
+                </Typography>
+                <List component="nav">
+                  {items}
+                </List>
               </Paper>
             </Grid>
           </Grid>
