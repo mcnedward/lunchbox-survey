@@ -5,6 +5,7 @@ export default class Survey {
     this.name = name;
     this.questions = questions;
     this.numberOfQuestions = questions.length;
+    this.isComplete = false;
     
     this.answeredQuestions = [];
     this.unansweredQuestions = questions.slice();
@@ -31,5 +32,10 @@ export default class Survey {
     this.unansweredQuestions.unshift(this.currentQuestion);
     // Take back the last answered
     this.currentQuestion = this.answeredQuestions.pop();
+  }
+
+  submit() {
+    this.answeredQuestions.push(this.currentQuestion);
+    this.isComplete = true;
   }
 }

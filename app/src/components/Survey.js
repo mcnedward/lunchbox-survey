@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Link } from 'react-router-dom';
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -75,7 +76,14 @@ class Survey extends React.Component {
 
   submit() {
     const { survey } = this.props;
-    console.log(survey);
+    const question = survey.getCurrentQuestion();
+    if (!question.isAnswered()) {
+      this.props.enqueueSnackbar('Please answer the question before submitting.', { variant: 'error' });
+      return;
+    }
+
+    survey.submit();
+    this.setState({ survey });
   }
 
   render() {
@@ -86,6 +94,8 @@ class Survey extends React.Component {
       contents = (
         <div className={classes.emptyStyle}>Could not find the survey</div>
       );
+    } else if (survey.isComplete) {
+      contents = this.buildCompleteCard();
     } else {
       contents = this.buildCard();
     }
@@ -104,9 +114,11 @@ class Survey extends React.Component {
   }
 
   buildCard() {
-    const { classes, survey } = this.props;
+    const { classes, theme, survey } = this.props;
 
-    let question = survey.getCurrentQuestion();
+    const currentStep = survey.getCurrentIndex();
+    const numberOfQuestions = survey.numberOfQuestions;
+    const question = survey.getCurrentQuestion();
 
     let submitButton = '';
     if (survey.getCurrentIndex() === survey.questions.length - 1) {
@@ -130,38 +142,48 @@ class Survey extends React.Component {
           </Typography>
           <Question question={question} />
         </CardContent>
-        {this.getSteps()}
+
+        <MobileStepper
+          variant="progress"
+          steps={numberOfQuestions}
+          position="static"
+          activeStep={currentStep}
+          className={classes.steps}
+          nextButton={
+            <Button size="small" onClick={this.nextQuestion} disabled={currentStep === numberOfQuestions - 1}>
+              Next
+            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+            </Button>
+          }
+          backButton={
+            <Button size="small" onClick={this.previousQuestion} disabled={currentStep === 0}>
+              {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+              Back
+          </Button>
+          }
+        />
         {submitButton}
       </Card>
     );
   }
 
-  getSteps() {
+  buildCompleteCard() {
     const { classes, theme, survey } = this.props;
 
-    const currentStep = survey.getCurrentIndex();
-    const numberOfQuestions = survey.numberOfQuestions;
-
     return (
-      <MobileStepper
-        variant="progress"
-        steps={numberOfQuestions}
-        position="static"
-        activeStep={currentStep}
-        className={classes.steps}
-        nextButton={
-          <Button size="small" onClick={this.nextQuestion} disabled={currentStep === numberOfQuestions - 1}>
-            Next
-            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography color="textPrimary" variant="h5" gutterBottom>
+            {survey.name}
+          </Typography>
+          <Typography color="textPrimary" variant="h6" gutterBottom>
+            Thank you for completing the survey!
+          </Typography>
+          <Button component={Link} to="/" color="primary" size="small">
+            Return to home
           </Button>
-        }
-        backButton={
-          <Button size="small" onClick={this.previousQuestion} disabled={currentStep === 0}>
-            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-            Back
-          </Button>
-        }
-      />
+        </CardContent>
+      </Card>
     )
   }
 }
