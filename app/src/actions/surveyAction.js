@@ -9,11 +9,11 @@ function createSurvey(id, name) {
   let questions = [];
   for (let i = 0; i < 6; i++) {
     if (i < 2) {
-      questions.push(new Question(QuestionTypes.Text, 'Tell me more'));
+      questions.push(new Question(i + 1, QuestionTypes.Text, 'Tell me more'));
     } else if (i < 4) {
-      questions.push(new Question(QuestionTypes.Choice, 'Pick one', ['Blue', 'Red', 'Green']));
+      questions.push(new Question(i + 1, QuestionTypes.Choice, 'Pick one', ['Blue', 'Red', 'Green']));
     } else {
-      questions.push(new Question(QuestionTypes.Bool, 'Yes or No?'));
+      questions.push(new Question(i + 1, QuestionTypes.Bool, 'Yes or No?'));
     }
   }
   return new Survey(id, name, questions);
