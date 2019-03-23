@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 import configureStore from './configureStore';
 import * as serviceWorker from './serviceWorker';
@@ -11,9 +11,9 @@ const store = configureStore();
 
 render(
   <Provider store={store}>
-    <HashRouter>
+    <BrowserRouter>
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
