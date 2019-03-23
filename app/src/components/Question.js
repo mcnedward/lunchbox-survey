@@ -3,7 +3,6 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
@@ -23,12 +22,17 @@ const styles = theme => ({
 });
 
 class Question extends React.Component {
-  handleTextChange = name => event => {
-    console.log(name, event);
-  };
+  constructor(props) {
+    super(props);
+    const { question } = this.props;
+    this.state = { question };
+    this.setAnswer = this.setAnswer.bind(this);
+  }
 
-  handleRadioChange = event => {
-    console.log(event);
+  setAnswer = event => {
+    const { question } = this.props;
+    question.answer = event.target.value;
+    this.setState({question})
   };
 
   render() {
@@ -54,7 +58,8 @@ class Question extends React.Component {
         multiline
         fullWidth
         rowsMax="4"
-        onChange={this.handleTextChange("multiline")}
+        value={question.answer}
+        onChange={this.setAnswer}
         className={classes.textField}
         margin="normal"
       />
@@ -80,7 +85,8 @@ class Question extends React.Component {
           aria-label={question.question}
           name="choices"
           className={classes.group}
-          onChange={this.handleRadioChange}
+          value={question.answer}
+          onChange={this.setAnswer}
         >
           {options}
         </RadioGroup>
@@ -98,7 +104,8 @@ class Question extends React.Component {
           aria-label={question.question}
           name="truefalse"
           className={classes.group}
-          onChange={this.handleRadioChange}
+          value={question.answer}
+          onChange={this.setAnswer}
         >
           <FormControlLabel
             value="true"

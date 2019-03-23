@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
+import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
@@ -12,6 +12,7 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Icon from '@material-ui/core/Icon';
+import { withSnackbar } from 'notistack';
 
 import { getSurveyById } from "../actions/surveyAction";
 import Question from "./Question";
@@ -45,6 +46,7 @@ class Survey extends React.Component {
     super(props);
     this.previousQuestion = this.previousQuestion.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   componentDidMount() {
@@ -58,11 +60,22 @@ class Survey extends React.Component {
 
     this.setState({ survey });
   }
+
   nextQuestion() {
     const { survey } = this.props;
-    survey.nextQuestion();
+    const question = survey.getCurrentQuestion();
+    if (!question.isAnswered()) {
+      this.props.enqueueSnackbar('Please answer the question before moving on.', { variant: 'error' });
+      return;
+    }
 
+    survey.nextQuestion();
     this.setState({ survey });
+  }
+
+  submit() {
+    const { survey } = this.props;
+    console.log(survey);
   }
 
   render() {
@@ -99,7 +112,7 @@ class Survey extends React.Component {
     if (survey.getCurrentIndex() === survey.questions.length - 1) {
       submitButton = (
         <div className={classes.submit}>
-          <Button fullWidth variant="contained" color="primary" onClick={this.previousQuestion}>
+          <Button fullWidth variant="contained" color="primary" onClick={this.submit}>
             Submit <Icon className={classes.rightIcon}>send</Icon>
           </Button>
         </div>
@@ -163,4 +176,9 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Survey)));
+
+const snackbarSurvey = withSnackbar(Survey);
+const styledSurvey = withStyles(styles, { withTheme: true })(snackbarSurvey);
+const connectedSurvey = connect(mapStateToProps)(styledSurvey);
+
+export default withRouter(connectedSurvey);

@@ -12,6 +12,7 @@
     "marked": "^0.6.1",
     "node-sass": "^4.11.0",
     "nodemon": "^1.18.10",
+    "notistack": "^0.5.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-redux": "^6.0.1",
