@@ -22,8 +22,8 @@ app.use('/api', routes)
 
 // Global error handling
 app.use((err, req, res, next) => {
-  console.error('Unhandled error caught', err)
-  res.status(400).send('There was a problem with your request, please try again.');
+  console.error('Unhandled error caught from global handler', err)
+  res.status(400).send(`There was a problem with your request, please try again. Message: ${err}`);
 });
 
 // DB setup

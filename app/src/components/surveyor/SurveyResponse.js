@@ -7,9 +7,10 @@ import Typography from "@material-ui/core/Typography";
 import TextResponse from './TextResponse';
 import ChoiceResponse from './ChoiceResponse';
 import BoolResponse from './BoolResponse';
-import { getSurveyResponses } from '../../actions/surveyAction';
 import { QuestionTypes } from '../../models/question';
 import Button from "@material-ui/core/Button";
+import { withSnackbar } from 'notistack';
+import getSurveyResponses from '../../actions/getSurveyResponsesAction';
 
 const styles = theme => ({
   header: {
@@ -26,25 +27,31 @@ class SurveyResponse extends React.Component {
     const { dispatch, id } = this.props;
     dispatch(getSurveyResponses(id));
   }
+  componentDidUpdate() {
+    let { error } = this.props;
+    if (error) {
+      this.props.enqueueSnackbar(error, { variant: 'error' });
+    }
+  }
 
   render() {
-    let { classes, survey } = this.props;
+    let { classes, surveyResponses, isLoading } = this.props;
 
-    let title;
-    if (survey == null) {
+    if (surveyResponses == null || surveyResponses.length === 0) {
       return (
         <Typography color="primary" variant="h4" className={classes.header}>
-          {title}
+          Could not find any responses
         </Typography>
       );
     }
 
+    let name = surveyResponses[0].name;
     return (
       <div>
         <Typography color="primary" variant="h4" className={classes.header}>
-          {survey.name}
+          {name}
         </Typography>
-        {survey.questions.map((question, index) => {
+        {/* {survey.answeredQuestions.map((question, index) => {
           if (question.type === QuestionTypes.Text) {
             return <TextResponse question={question} number={index + 1} key={index} />
           } else if (question.type === QuestionTypes.Choice) {
@@ -54,7 +61,7 @@ class SurveyResponse extends React.Component {
           } else {
             return <div>Could not find the question...</div>
           }
-        })}
+        })} */}
         <Button component={Link} to="/surveyor" color="primary" size="small" className={classes.btnReturn}>
           Back
         </Button>
@@ -64,13 +71,19 @@ class SurveyResponse extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { surveyState } = state;
+  const { getSurveyResponsesState } = state;
   const { id } = ownProps.match.params;
 
   return {
     id,
-    survey: surveyState.survey
+    surveyResponses: getSurveyResponsesState.surveyResponses,
+    isLoading: getSurveyResponsesState.isLoading,
+    error: getSurveyResponsesState.error
   };
 }
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(SurveyResponse)));
+const snackbarComp = withSnackbar(SurveyResponse);
+const styledComp = withStyles(styles, { withTheme: true })(snackbarComp);
+const connectedComp = connect(mapStateToProps)(styledComp);
+
+export default connectedComp;

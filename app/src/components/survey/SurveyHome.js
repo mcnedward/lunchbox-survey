@@ -48,7 +48,7 @@ class SurveyHome extends React.Component {
 
     return (
       <div>
-        <Typography color="primary" variant="h4" className={classes.padding}>
+        <Typography color="primary" variant="h4">
           {title}
         </Typography>
         <List component="nav">

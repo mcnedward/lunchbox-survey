@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import { surveyState } from './surveyReducer';
 import { surveyResponseState } from './surveyResponseReducer';
+import { getSurveyResponsesState } from './getSurveyResponsesReducer';
 
 const rootReducer = combineReducers({
   surveyState,
-  surveyResponseState
+  surveyResponseState,
+  getSurveyResponsesState
 })
 
 export default rootReducer

@@ -39,8 +39,7 @@ class SurveyForm extends React.Component {
     const { survey } = props;
 
     this.state = {
-      answeredQuestions: [],
-      unansweredQuestions: [],
+      answers: [],
       currentQuestion: survey.questions[0],
       currentStep: 0,
       numberOfQuestions: survey.questions.length
@@ -56,48 +55,56 @@ class SurveyForm extends React.Component {
 
   previousQuestion() {
     const { survey } = this.props;
-    let { answeredQuestions, currentQuestion, currentStep } = this.state;
+    let { answers, currentQuestion, currentStep } = this.state;
 
-    answeredQuestions.pop();
+    answers.pop();
     currentQuestion = survey.questions[--currentStep];
 
-    this.setState({ answeredQuestions, currentQuestion, currentStep });
+    this.setState({ answers, currentQuestion, currentStep });
   }
 
   nextQuestion() {
     const { survey } = this.props;
-    let { answeredQuestions, currentQuestion, currentStep } = this.state;
+    let { answers, currentQuestion, currentStep } = this.state;
 
     if (currentQuestion.answer == null || currentQuestion.answer === '') {
       this.props.enqueueSnackbar('Please answer the question before moving on.', { variant: 'error' });
       return;
     }
 
-    answeredQuestions.push(currentQuestion);          // Add to answered list
+    let answer = {
+      questionId: currentQuestion._id,
+      answer: currentQuestion.answer
+    }
+    answers.push(answer);          // Add to answered list
     currentQuestion = survey.questions[++currentStep];
 
-    this.setState({ answeredQuestions, currentQuestion, currentStep });
+    this.setState({ answers, currentQuestion, currentStep });
   }
 
   submit() {
     const { dispatch, survey } = this.props;
-    let { answeredQuestions, currentQuestion } = this.state;
+    let { answers, currentQuestion } = this.state;
 
     if (currentQuestion.answer == null || currentQuestion.answer === '') {
       this.props.enqueueSnackbar('Please answer the question before submitting.', { variant: 'error' });
       return;
     }
-    if (answeredQuestions.length !== survey.questions.length) {
+    if (answers.length !== survey.questions.length) {
       // Validation to ensure question is only added once when hitting submit
       // In case error response on submit or something else like that
-      answeredQuestions.push(currentQuestion);
+      let answer = {
+        questionId: currentQuestion._id,
+        answer: currentQuestion.answer
+      }
+      answers.push(answer);
     }
 
     // POST
     const surveyResponse = {
       surveyId: survey._id,
       name: survey.name,
-      answers: answeredQuestions
+      answers
     }
     dispatch(respondToSurvey(surveyResponse));
   }
@@ -163,7 +170,6 @@ function mapStateToProps(state, ownProps) {
     error: surveyResponseState.error
   };
 }
-
 
 const snackbarComp = withSnackbar(SurveyForm);
 const styledComp = withStyles(styles, { withTheme: true })(snackbarComp);

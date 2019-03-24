@@ -10,8 +10,7 @@ const QuestionSchema = new Schema({
     type: String,
     required: [true, 'Question is required']
   },
-  options: [String],
-  answer: String
+  options: [String]
 });
 
 const Question = mongoose.model('question', QuestionSchema);

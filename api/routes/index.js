@@ -5,9 +5,6 @@ const SurveyResponse = require('../models/surveyResponse');
 
 // Gets all surveys
 router.get('/surveys', asyncMiddleware(async (req, res) => {
-  console.log('Finding surveys')
-
-  // await Survey.create({ name: 'From API', questions: [] });
   let surveys = await Survey.find().exec();
   console.log(surveys)
   res.json(surveys);
@@ -15,23 +12,28 @@ router.get('/surveys', asyncMiddleware(async (req, res) => {
 
 router.get('/surveys/:id', asyncMiddleware(async (req, res) => {
   const id = req.params.id
-  console.log('Finding survey with id: ' + id)
 
   let survey = await Survey.findOne({ _id: id }).exec();
-
   res.json(survey);
 }));
 
-router.post('/surveys', asyncMiddleware(async (req, res) => {
+router.post('/surveyresponses', asyncMiddleware(async (req, res) => {
   const surveyResponse = req.body;
   if (surveyResponse == null) {
     res.status(400);
     return res.send('You need to provide a response to the survey.');
   }
-  console.log('Responding to survey with id', surveyResponse)
 
-  let result = SurveyResponse.create(surveyResponse);
+  let result = await SurveyResponse.create(surveyResponse);
   res.json(result);
-}))
+}));
+
+router.get('/surveyresponses/:id', asyncMiddleware(async (req, res) => {
+  const id = req.params.id
+  console.log('Finding surveyResponse with id: ' + id)
+
+  let surveyResponse = await SurveyResponse.find({ surveyId: id }).exec();
+  res.json(surveyResponse);
+}));
 
 module.exports = router;

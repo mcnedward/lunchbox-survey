@@ -2,19 +2,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { QuestionSchema } = require('./question');
 
+const AnswerSchema = new Schema({
+  questionId: {
+    type: String,
+    required: [true, 'QuestionId is required']
+  },
+  answer: String
+})
+
 const SurveyResponseSchema = new Schema({
   surveyId: {
     type: String,
     required: [true, 'SurveyId is required']
   },
-  name: {
-    type: String,
-    required: [true, 'Name is required']
-  },
-  questions: {
-    type: [QuestionSchema],
-    required: [true, 'Questions are required']
-  }
+  answers: [AnswerSchema]
 })
 
 const SurveyResponse = mongoose.model('surveyResponse', SurveyResponseSchema);

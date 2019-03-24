@@ -84,36 +84,3 @@ export function getSurveyById(id) {
     dispatch(action);
   };
 }
-
-export function getSurveyResponses(id) {
-  return async dispatch => {
-    const surveys = await fetchSurveys();
-
-    const survey = surveys.find(s => s.id === id);
-
-    for (let question of survey.questions) {
-      for (let i = 0; i < 8; i++) {
-        let response;
-        if (question.type === QuestionTypes.Text) {
-          response = 'Some long response goes here. Hopefully this will never be too long that it is hard to read, but we will see. Here we go, here is your answer.'
-        }
-        else if (question.type === QuestionTypes.Choice) {
-          let random = Math.floor(Math.random() * question.options.length);
-          response = question.options[random];
-        }
-        else if (question.type === QuestionTypes.Bool) {
-          response = i % 3 === 0;
-        }
-
-        question.responses.push(response);
-      }
-    }
-
-    let action = {
-      type: GET_SURVEY_RESPONSES_SUCCESS,
-      data: survey
-    };
-
-    dispatch(action);
-  };
-}
