@@ -12,9 +12,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { getAllSurveys } from '../../actions/surveyAction';
 
 const styles = theme => ({
-  padding: {
-    padding: theme.spacing.unit * 2
-  },
   listStyle: {
     width: '100%',
     maxWidth: 360,
@@ -40,7 +37,7 @@ class SurveyorHome extends React.Component {
 
     return (
       <div>
-        <Typography color="primary" variant="h4" className={classes.padding}>
+        <Typography color="primary" variant="h4">
           {title}
         </Typography>
         <List component="nav">

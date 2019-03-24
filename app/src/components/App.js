@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +14,10 @@ import CreateSurvey from './surveyor/CreateSurvey';
 import SurveyResponse from './surveyor/SurveyResponse';
 
 const styles = theme => ({
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.primary.main
+  },
   appContainer: {
     paddingTop: theme.spacing.unit * 2
   },
@@ -34,8 +39,8 @@ class App extends React.Component {
         <AppBar position="static" color="default">
           <Toolbar>
             <Typography variant="h6" color="inherit">
-              Lunchbox | Survey
-          </Typography>
+              <Link to="/" className={classes.link}>Lunchbox | Survey</Link>
+            </Typography>
           </Toolbar>
         </AppBar>
 

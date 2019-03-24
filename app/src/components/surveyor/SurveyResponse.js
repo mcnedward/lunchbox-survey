@@ -2,16 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import Typography from "@material-ui/core/Typography";
 import TextResponse from './TextResponse';
 import ChoiceResponse from './ChoiceResponse';
 import BoolResponse from './BoolResponse';
 import { getSurveyResponses } from '../../actions/surveyAction';
 import { QuestionTypes } from '../../models/question';
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   header: {
     marginBottom: theme.spacing.unit * 2
+  },
+  btnReturn: {
+    marginTop: theme.spacing.unit * 2
   }
 })
 
@@ -28,7 +33,7 @@ class SurveyResponse extends React.Component {
     let title;
     if (survey == null) {
       return (
-        <Typography color="primary" variant="h5" className={classes.header}>
+        <Typography color="primary" variant="h4" className={classes.header}>
           {title}
         </Typography>
       );
@@ -36,7 +41,7 @@ class SurveyResponse extends React.Component {
 
     return (
       <div>
-        <Typography color="primary" variant="h5" className={classes.header}>
+        <Typography color="primary" variant="h4" className={classes.header}>
           {survey.name}
         </Typography>
         {survey.questions.map((question, index) => {
@@ -50,6 +55,9 @@ class SurveyResponse extends React.Component {
             return <div>Could not find the question...</div>
           }
         })}
+        <Button component={Link} to="/surveyor" color="primary" size="small" className={classes.btnReturn}>
+          Back
+        </Button>
       </div>
     )
   }

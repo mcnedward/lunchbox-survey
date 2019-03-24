@@ -13,9 +13,6 @@ import Survey from "../../models/survey";
 import { Question } from "../../models/question";
 
 const styles = theme => ({
-  padding: {
-    padding: theme.spacing.unit * 2
-  },
   bottomButtons: {
     marginTop: theme.spacing.unit * 2
   }
@@ -62,41 +59,41 @@ class CreateSurvey extends React.Component {
     const { survey } = this.state;
 
     return (
-      <Grid container justify="center">
-        <Grid item>
-          <Typography color="primary" variant="h4">
-            Create New Survey
-                </Typography>
+      <div>
+        <Typography color="primary" variant="h4">
+          Create New Survey
+          </Typography>
 
-          <TextField
-            id="surveyTitle"
-            label="Survey Title"
-            helperText="Enter a title for your survey"
-            fullWidth
-            margin="normal"
-          />
+        <TextField
+          id="surveyTitle"
+          label="Survey Title"
+          helperText="Enter a title for your survey"
+          fullWidth
+          margin="normal"
+        />
 
-          {survey.questions.map((question, index) => (
+        {
+          survey.questions.map((question, index) => (
             <CreateQuestion question={question} key={index} number={index + 1} onDeleteQuestion={this.onDeleteQuestion} />
-          ))}
+          ))
+        }
 
-          <Button size="small" onClick={this.addQuestion}>
-            Add question
+        <Button size="small" onClick={this.addQuestion}>
+          Add question
           </Button>
-          <Grid container justify="space-between" spacing={24} className={classes.bottomButtons}>
-            <Grid item>
-              <Button component={Link} to="/surveyor" color="primary" size="small">
-                Cancel
+        <Grid container justify="space-between" spacing={24} className={classes.bottomButtons}>
+          <Grid item>
+            <Button component={Link} to="/surveyor" color="primary" size="small">
+              Cancel
               </Button>
-            </Grid>
-            <Grid item>
-              <Button size="small" variant="contained" color="primary" onClick={this.createSurvey}>
-                Create
+          </Grid>
+          <Grid item>
+            <Button size="small" variant="contained" color="primary" onClick={this.createSurvey}>
+              Create
               </Button>
-            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </div>
     );
   }
 }
