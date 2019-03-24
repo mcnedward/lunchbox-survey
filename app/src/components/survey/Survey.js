@@ -11,25 +11,12 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Icon from '@material-ui/core/Icon';
-import { withSnackbar } from 'notistack';
+import SurveyCard from './SurveyCard';
 
 import { getSurveyById } from "../../actions/surveyAction";
 import Question from "./Question";
 
 const styles = theme => ({
-  surveyContents: {
-    padding: theme.spacing.unit * 2
-  },
-  actions: {
-    display: "flex",
-    justifyContent: "space-between"
-  },
-  submit: {
-    margin: theme.spacing.unit * 2
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
   btnReturn: {
     marginTop: theme.spacing.unit * 2
   }
@@ -39,8 +26,6 @@ class Survey extends React.Component {
 
   constructor(props) {
     super(props);
-    this.previousQuestion = this.previousQuestion.bind(this);
-    this.nextQuestion = this.nextQuestion.bind(this);
     this.submit = this.submit.bind(this);
   }
 
@@ -49,42 +34,30 @@ class Survey extends React.Component {
     dispatch(getSurveyById(id));
   }
   componentDidUpdate() {
-    let { error } = this.props;
+    let { error, survey } = this.props;
 
     if (error) {
       this.props.enqueueSnackbar(error, { variant: 'error' });
     }
+
   }
-
-  previousQuestion() {
-    const { survey } = this.props;
-    survey.previousQuestion();
-
-    this.setState({ survey });
-  }
-
-  nextQuestion() {
-    const { survey } = this.props;
-    const question = survey.getCurrentQuestion();
-    if (!question.isAnswered()) {
-      this.props.enqueueSnackbar('Please answer the question before moving on.', { variant: 'error' });
-      return;
+  componentWillReceiveProps(nextProps) {
+    if (this.props.survey !== nextProps.survey) {
+      let currentQuestion = nextProps.survey.questions[0];
+      this.setState({ currentQuestion });
     }
-
-    survey.nextQuestion();
-    this.setState({ survey });
   }
 
   submit() {
-    const { survey } = this.props;
-    const question = survey.getCurrentQuestion();
-    if (!question.isAnswered()) {
-      this.props.enqueueSnackbar('Please answer the question before submitting.', { variant: 'error' });
-      return;
-    }
+    // const { survey } = this.props;
+    // const question = survey.getCurrentQuestion();
+    // if (!question.isAnswered()) {
+    //   this.props.enqueueSnackbar('Please answer the question before submitting.', { variant: 'error' });
+    //   return;
+    // }
 
-    survey.submit();
-    this.setState({ survey });
+    // survey.submit();
+    // this.setState({ survey });
   }
 
   render() {
@@ -98,9 +71,9 @@ class Survey extends React.Component {
         </Typography>
       );
     } else if (survey.isComplete) {
-      contents = this.buildCompleteCard();
+      contents = this.buildCompleteCard()
     } else {
-      contents = this.buildCard();
+      contents = <SurveyCard survey={survey}></SurveyCard>;
     }
 
     return (
@@ -109,60 +82,6 @@ class Survey extends React.Component {
         <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
           Return to home
         </Button>
-      </div>
-    );
-  }
-
-  buildCard() {
-    const { classes, theme, survey } = this.props;
-
-    const currentStep = survey.getCurrentIndex();
-    const numberOfQuestions = survey.numberOfQuestions;
-    const question = survey.getCurrentQuestion();
-
-    let submitButton = '';
-    if (survey.getCurrentIndex() === survey.questions.length - 1) {
-      submitButton = (
-        <div className={classes.submit}>
-          <Button fullWidth variant="contained" color="primary" onClick={this.submit}>
-            Submit <Icon className={classes.rightIcon}>send</Icon>
-          </Button>
-        </div>
-      );
-    }
-
-    return (
-      <div>
-        <div className={classes.surveyContents}>
-          <Typography color="primary" variant="h4" gutterBottom>
-            {survey.name}
-          </Typography>
-          <Typography color="textSecondary" variant="h5" gutterBottom>
-            Question #{survey.getCurrentIndex() + 1}
-          </Typography>
-          <Question question={question} />
-
-        </div>
-
-        <MobileStepper
-          variant="progress"
-          steps={numberOfQuestions}
-          position="static"
-          activeStep={currentStep}
-          nextButton={
-            <Button size="small" onClick={this.nextQuestion} disabled={currentStep === numberOfQuestions - 1}>
-              Next
-              {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-            </Button>
-          }
-          backButton={
-            <Button size="small" onClick={this.previousQuestion} disabled={currentStep === 0}>
-              {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-              Back
-            </Button>
-          }
-        />
-        {submitButton}
       </div>
     );
   }
@@ -197,8 +116,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 
-const snackbarSurvey = withSnackbar(Survey);
-const styledSurvey = withStyles(styles, { withTheme: true })(snackbarSurvey);
+const styledSurvey = withStyles(styles, { withTheme: true })(Survey);
 const connectedSurvey = connect(mapStateToProps)(styledSurvey);
 
 export default withRouter(connectedSurvey);
