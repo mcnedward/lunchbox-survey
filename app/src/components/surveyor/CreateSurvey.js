@@ -104,7 +104,7 @@ class CreateSurvey extends React.Component {
               </Grid>
             </CardActions>
           </Card>
-          <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
+          <Button component={Link} to="/surveyor" color="primary" size="small" className={classes.btnReturn}>
             Cancel
           </Button>
         </Grid>

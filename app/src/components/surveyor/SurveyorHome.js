@@ -43,7 +43,7 @@ class SurveyorHome extends React.Component {
 
     let items = [];
     for (let survey of surveys) {
-      let to = `/surveyor/survey/${survey.id}`;
+      let to = `/surveyor/surveys/${survey.id}`;
       let el = (
         <ListItem button component={Link} to={to} key={survey.id}>
           <ListItemText primary={survey.name} />
@@ -55,10 +55,10 @@ class SurveyorHome extends React.Component {
     return (
       <Grid container justify="center">
         <Grid item xs={12}>
-          <Grid container justify="center" spacing={Number('16')}>
+          <Grid container justify="center" spacing={16}>
             <Grid item>
               <Paper>
-                <Typography color="primary" variant="h5" className={classes.padding}>
+                <Typography color="primary" variant="h4" className={classes.padding}>
                   {title}
                 </Typography>
                 <List component="nav">
