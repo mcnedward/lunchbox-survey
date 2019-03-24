@@ -14,11 +14,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// API routes
-app.use('/api', routes)
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// API routes
+app.use('/api', routes)
 
 // Global error handling
 app.use((err, req, res, next) => {

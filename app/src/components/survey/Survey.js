@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { withSnackbar } from 'notistack';
 import { Link } from 'react-router-dom';
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -30,33 +31,16 @@ class Survey extends React.Component {
   }
   componentDidUpdate() {
     let { error } = this.props;
-
     if (error) {
       this.props.enqueueSnackbar(error, { variant: 'error' });
-    }
-
-  }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.survey !== nextProps.survey) {
-      let currentQuestion = nextProps.survey.questions[0];
-      this.setState({ currentQuestion });
     }
   }
 
   submit() {
-    // const { survey } = this.props;
-    // const question = survey.getCurrentQuestion();
-    // if (!question.isAnswered()) {
-    //   this.props.enqueueSnackbar('Please answer the question before submitting.', { variant: 'error' });
-    //   return;
-    // }
-
-    // survey.submit();
-    // this.setState({ survey });
   }
 
   render() {
-    const { classes, survey } = this.props;
+    const { classes, survey, isSubmitted } = this.props;
 
     let contents;
     if (survey == null) {
@@ -65,7 +49,7 @@ class Survey extends React.Component {
           Could not find the survey
         </Typography>
       );
-    } else if (survey.isComplete) {
+    } else if (isSubmitted) {
       contents = this.buildCompleteCard()
     } else {
       contents = <SurveyForm survey={survey}></SurveyForm>;
@@ -85,33 +69,32 @@ class Survey extends React.Component {
     const { classes, survey } = this.props;
 
     return (
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography color="textPrimary" variant="h5" gutterBottom>
-            {survey.name}
-          </Typography>
-          <Typography color="textPrimary" variant="h6" gutterBottom>
-            Thank you for completing the survey!
-          </Typography>
-        </CardContent>
-      </Card>
+      <div>
+        <Typography color="textPrimary" variant="h5" gutterBottom>
+          {survey.name}
+        </Typography>
+        <Typography color="textPrimary" variant="h6" gutterBottom>
+          Thank you for completing the survey!
+        </Typography>
+      </div>
     )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const { surveyState } = state;
+  const { surveyState, surveyResponseState } = state;
   const { id } = ownProps.match.params;
 
   return {
     id,
     survey: surveyState.survey,
-    error: surveyState.error
+    error: surveyState.error,
+    isSubmitted: surveyResponseState.isSubmitted
   };
 }
 
+const snackbarComp = withSnackbar(Survey);
+const styledComp = withStyles(styles, { withTheme: true })(snackbarComp);
+const connectedComp = connect(mapStateToProps)(styledComp);
 
-const styledSurvey = withStyles(styles, { withTheme: true })(Survey);
-const connectedSurvey = connect(mapStateToProps)(styledSurvey);
-
-export default withRouter(connectedSurvey);
+export default withRouter(connectedComp);

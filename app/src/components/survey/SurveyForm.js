@@ -1,28 +1,34 @@
 import React from "react";
+import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import MobileStepper from '@material-ui/core/MobileStepper';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Icon from '@material-ui/core/Icon';
 import { withSnackbar } from 'notistack';
-
 import Question from "./Question";
+import { respondToSurvey } from '../../actions/surveyResponseAction';
 
 const styles = theme => ({
   surveyContents: {
     padding: theme.spacing.unit * 2
   },
   submit: {
+    textAlign: 'center',
     margin: theme.spacing.unit * 2
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
+  },
+  spinner: {
+    marginTop: theme.spacing.unit
   }
 });
 
-class SurveyCard extends React.Component {
+class SurveyForm extends React.Component {
 
   constructor(props) {
     super(props);
@@ -38,6 +44,13 @@ class SurveyCard extends React.Component {
       currentQuestion: survey.questions[0],
       currentStep: 0,
       numberOfQuestions: survey.questions.length
+    }
+  }
+
+  componentDidUpdate() {
+    let { error } = this.props;
+    if (error) {
+      this.props.enqueueSnackbar(error, { variant: 'error' });
     }
   }
 
@@ -67,14 +80,18 @@ class SurveyCard extends React.Component {
   }
 
   submit() {
-    const { survey } = this.props;
+    const { dispatch, survey } = this.props;
     let { answeredQuestions, currentQuestion } = this.state;
 
     if (currentQuestion.answer == null || currentQuestion.answer === '') {
       this.props.enqueueSnackbar('Please answer the question before submitting.', { variant: 'error' });
       return;
     }
-    answeredQuestions.push(currentQuestion);          // Add to answered list
+    if (answeredQuestions.length !== survey.questions.length) {
+      // Validation to ensure question is only added once when hitting submit
+      // In case error response on submit or something else like that
+      answeredQuestions.push(currentQuestion);
+    }
 
     // POST
     const surveyResponse = {
@@ -82,20 +99,21 @@ class SurveyCard extends React.Component {
       name: survey.name,
       answers: answeredQuestions
     }
-    console.log(surveyResponse)
+    dispatch(respondToSurvey(surveyResponse));
   }
 
   render() {
-    const { classes, theme, survey } = this.props;
+    const { classes, theme, survey, isLoading } = this.props;
     const { currentQuestion, currentStep, numberOfQuestions } = this.state;
 
     let submitButton = '';
     if (currentStep === numberOfQuestions - 1) {
       submitButton = (
         <div className={classes.submit}>
-          <Button fullWidth variant="contained" color="primary" onClick={this.submit}>
+          <Button fullWidth variant="contained" color="primary" onClick={this.submit} disabled={isLoading}>
             Submit <Icon className={classes.rightIcon}>send</Icon>
           </Button>
+          {isLoading ? <CircularProgress className={classes.spinner} /> : ''}
         </div>
       );
     }
@@ -137,8 +155,18 @@ class SurveyCard extends React.Component {
   }
 }
 
+function mapStateToProps(state, ownProps) {
+  const { surveyResponseState } = state;
 
-const snackbarSurvey = withSnackbar(SurveyCard);
-const styledSurvey = withStyles(styles, { withTheme: true })(snackbarSurvey);
+  return {
+    isLoading: surveyResponseState.isLoading,
+    error: surveyResponseState.error
+  };
+}
 
-export default styledSurvey;
+
+const snackbarComp = withSnackbar(SurveyForm);
+const styledComp = withStyles(styles, { withTheme: true })(snackbarComp);
+const connectedComp = connect(mapStateToProps)(styledComp);
+
+export default connectedComp;

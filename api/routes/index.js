@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const asyncMiddleware = require('../utils/asyncMiddleware');
 const Survey = require('../models/survey');
+const SurveyResponse = require('../models/surveyResponse');
 
 // Gets all surveys
 router.get('/surveys', asyncMiddleware(async (req, res) => {
@@ -20,5 +21,17 @@ router.get('/surveys/:id', asyncMiddleware(async (req, res) => {
 
   res.json(survey);
 }));
+
+router.post('/surveys', asyncMiddleware(async (req, res) => {
+  const surveyResponse = req.body;
+  if (surveyResponse == null) {
+    res.status(400);
+    return res.send('You need to provide a response to the survey.');
+  }
+  console.log('Responding to survey with id', surveyResponse)
+
+  let result = SurveyResponse.create(surveyResponse);
+  res.json(result);
+}))
 
 module.exports = router;
