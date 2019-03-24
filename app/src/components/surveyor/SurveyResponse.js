@@ -6,6 +6,8 @@ import { withRouter } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import Typography from "@material-ui/core/Typography";
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -23,7 +25,7 @@ const styles = theme => ({
   }
 })
 
-class SurveyHome extends React.Component {
+class SurveyorResponse extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -36,12 +38,12 @@ class SurveyHome extends React.Component {
     if (surveys == null) surveys = [];
 
     let title = surveys.length === 0 ?
-      'No surveys yet!' :
-      'Please select a survey to start';
+      'You haven\'t created any surveys yet!' :
+      'Surveys created by you';
 
     let items = [];
     for (let survey of surveys) {
-      let to = `/survey/${survey.id}`;
+      let to = `/surveyor/survey/${survey.id}`;
       let el = (
         <ListItem button component={Link} to={to} key={survey.id}>
           <ListItemText primary={survey.name} />
@@ -51,14 +53,24 @@ class SurveyHome extends React.Component {
     }
 
     return (
-      <div>
-        <Typography color="primary" variant="h4" className={classes.padding}>
-          {title}
-        </Typography>
-        <List component="nav">
-          {items}
-        </List>
-      </div>
+      <Grid container justify="center" spacing={16}>
+        <Grid item>
+          <Paper>
+            <Typography color="primary" variant="h5" className={classes.padding}>
+              {title}
+            </Typography>
+            <List component="nav">
+              {items}
+            </List>
+
+            <div className={classes.padding}>
+              <Button fullWidth variant="contained" color="primary" component={Link} to="surveyor/surveys">
+                Create new survey
+              </Button>
+            </div>
+          </Paper>
+        </Grid>
+      </Grid>
     )
   }
 }
@@ -68,4 +80,4 @@ function mapStateToProps(state, ownProps) {
   return { surveys: surveyState.surveys };
 }
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(SurveyHome)));
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(SurveyorResponse)));

@@ -53,28 +53,20 @@ class SurveyorHome extends React.Component {
     }
 
     return (
-      <Grid container justify="center">
-        <Grid item xs={12}>
-          <Grid container justify="center" spacing={16}>
-            <Grid item>
-              <Paper>
-                <Typography color="primary" variant="h4" className={classes.padding}>
-                  {title}
-                </Typography>
-                <List component="nav">
-                  {items}
-                </List>
+      <div>
+        <Typography color="primary" variant="h4" className={classes.padding}>
+          {title}
+        </Typography>
+        <List component="nav">
+          {items}
+        </List>
 
-                <div className={classes.padding}>
-                  <Button fullWidth variant="contained" color="primary" component={Link} to="surveyor/surveys">
-                    Create new survey
-                  </Button>
-                </div>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+        <div className={classes.padding}>
+          <Button fullWidth variant="contained" color="primary" component={Link} to="surveyor/surveys">
+            Create new survey
+          </Button>
+        </div>
+      </div>
     )
   }
 }

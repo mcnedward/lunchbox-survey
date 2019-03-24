@@ -19,8 +19,8 @@ import { getSurveyById } from "../../actions/surveyAction";
 import Question from "./Question";
 
 const styles = theme => ({
-  card: {
-    minWidth: 350
+  surveyContents: {
+    padding: theme.spacing.unit * 2
   },
   emptyStyle: {
     padding: theme.spacing.unit * 2
@@ -28,10 +28,6 @@ const styles = theme => ({
   actions: {
     display: "flex",
     justifyContent: "space-between"
-  },
-  steps: {
-    maxWidth: 400,
-    flexGrow: 1,
   },
   submit: {
     margin: theme.spacing.unit * 2
@@ -104,18 +100,12 @@ class Survey extends React.Component {
     }
 
     return (
-      <Grid container justify="center">
-        <Grid item xs={12}>
-          <Grid container justify="center" spacing={Number("16")}>
-            <Grid item>
-              <Paper className={classes.paperStyle}>{contents}</Paper>
-              <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
-                Return to home
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+      <div>
+        {contents}
+        <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
+          Return to home
+        </Button>
+      </div>
     );
   }
 
@@ -138,23 +128,23 @@ class Survey extends React.Component {
     }
 
     return (
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography color="textPrimary" variant="h5" gutterBottom>
+      <div>
+        <div className={classes.surveyContents}>
+          <Typography color="primary" variant="h4" gutterBottom>
             {survey.name}
           </Typography>
-          <Typography color="textSecondary" variant="h6" gutterBottom>
+          <Typography color="textSecondary" variant="h5" gutterBottom>
             Question #{survey.getCurrentIndex() + 1}
           </Typography>
           <Question question={question} />
-        </CardContent>
+
+        </div>
 
         <MobileStepper
           variant="progress"
           steps={numberOfQuestions}
           position="static"
           activeStep={currentStep}
-          className={classes.steps}
           nextButton={
             <Button size="small" onClick={this.nextQuestion} disabled={currentStep === numberOfQuestions - 1}>
               Next
@@ -169,7 +159,7 @@ class Survey extends React.Component {
           }
         />
         {submitButton}
-      </Card>
+      </div>
     );
   }
 
