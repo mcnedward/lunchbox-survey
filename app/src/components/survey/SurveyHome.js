@@ -46,24 +46,20 @@ class SurveyHome extends React.Component {
       'No surveys yet!' :
       'Please select a survey to start';
 
-    let items = [];
-    for (let survey of surveys) {
-      let to = `/survey/${survey.id}`;
-      let el = (
-        <ListItem button component={Link} to={to} key={survey.id}>
-          <ListItemText primary={survey.name} />
-        </ListItem>
-      );
-      items.push(el);
-    }
-
     return (
       <div>
         <Typography color="primary" variant="h4" className={classes.padding}>
           {title}
         </Typography>
         <List component="nav">
-          {items}
+          {surveys.map(survey => {
+            let to = `/survey/${survey._id}`;
+            return (
+              <ListItem button component={Link} to={to} key={survey._id}>
+                <ListItemText primary={survey.name} />
+              </ListItem>
+            )
+          })}
         </List>
       </div>
     )

@@ -1,6 +1,8 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const routes = require('./routes')
+const appSettings = require('./configs/app-settings');
 const app = express();
 const port = '5000';
 
@@ -23,5 +25,10 @@ app.use((err, req, res, next) => {
   console.error('Unhandled error caught', err)
   res.status(400).send('There was a problem with your request, please try again.');
 });
+
+// DB setup
+mongoose.connect(appSettings.mongoConfig.server, { useNewUrlParser: true })
+  .then(() => console.log(`Database connected successfully!`))
+  .catch(err => console.log(err));
 
 app.listen(port, () => console.log(`Survey API running on port ${port}!`))

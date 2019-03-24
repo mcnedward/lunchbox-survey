@@ -42,9 +42,9 @@ class SurveyorHome extends React.Component {
         </Typography>
         <List component="nav">
           {surveys.map(survey => {
-            let to = `/surveyor/surveys/${survey.id}`;
+            let to = `/surveyor/surveys/${survey._id}`;
             return (
-              <ListItem button component={Link} to={to} key={survey.id}>
+              <ListItem button component={Link} to={to} key={survey._id}>
                 <ListItemText primary={survey.name} />
               </ListItem>
             )

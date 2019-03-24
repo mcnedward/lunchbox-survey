@@ -20,9 +20,6 @@ const styles = theme => ({
   surveyContents: {
     padding: theme.spacing.unit * 2
   },
-  emptyStyle: {
-    padding: theme.spacing.unit * 2
-  },
   actions: {
     display: "flex",
     justifyContent: "space-between"
@@ -50,6 +47,13 @@ class Survey extends React.Component {
   componentDidMount() {
     const { dispatch, id } = this.props;
     dispatch(getSurveyById(+id));
+  }
+  componentDidUpdate() {
+    let { error } = this.props;
+
+    if (error) {
+      this.props.enqueueSnackbar(error, { variant: 'error' });
+    }
   }
 
   previousQuestion() {
@@ -89,7 +93,9 @@ class Survey extends React.Component {
     let contents;
     if (survey == null) {
       contents = (
-        <div className={classes.emptyStyle}>Could not find the survey</div>
+        <Typography color="textPrimary" variant="h4" gutterBottom>
+          Could not find the survey
+        </Typography>
       );
     } else if (survey.isComplete) {
       contents = this.buildCompleteCard();
@@ -185,7 +191,8 @@ function mapStateToProps(state, ownProps) {
 
   return {
     id,
-    survey: surveyState.survey
+    survey: surveyState.survey,
+    error: surveyState.error
   };
 }
 

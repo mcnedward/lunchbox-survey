@@ -2,15 +2,13 @@ import { Question } from './question'
 
 export default class Survey {
 
-  constructor(id, name, questions = []) {
-    this.id = id;
-    this.name = name;
-    this.questions = questions;
-    this.numberOfQuestions = questions.length;
-    this.isComplete = false;
+  constructor(data) {
+    data && Object.assign(this, data);
     
+    this.isComplete = false;
+    this.numberOfQuestions = this.questions.length;
     this.answeredQuestions = [];
-    this.unansweredQuestions = questions.slice();
+    this.unansweredQuestions = this.questions.slice();
     this.currentQuestion = this.unansweredQuestions.shift();
   }
 

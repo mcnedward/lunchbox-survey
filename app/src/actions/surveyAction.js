@@ -2,6 +2,7 @@ import {
   GET_ALL_SURVEYS_SUCCESS,
   GET_ALL_SURVEYS_ERROR,
   GET_SURVEY_SUCCESS,
+  GET_SURVEY_ERROR,
   GET_SURVEY_RESPONSES_SUCCESS
 } from "../constants/actions-types";
 import Survey from "../models/survey";
@@ -36,10 +37,12 @@ export function getAllSurveys() {
     let action;
     try {
       const response = await axios.get('/api/surveys');
+
+      let surveys = response.data.map(d => new Survey(d));
       
       action = {
         type: GET_ALL_SURVEYS_SUCCESS,
-        data: []
+        data: surveys
       };
     } catch (error) {
       action = {
@@ -54,13 +57,20 @@ export function getAllSurveys() {
 
 export function getSurveyById(id) {
   return async dispatch => {
-    const surveys = await fetchSurveys();
-
-    const survey = surveys.find(s => s.id === id);
-    let action = {
-      type: GET_SURVEY_SUCCESS,
-      data: survey
-    };
+    let action;
+    try {
+      const response = await axios.get(`/api/surveys/${id}`);
+      
+      action = {
+        type: GET_SURVEY_SUCCESS,
+        data: {}
+      };
+    } catch (error) {
+      action = {
+        type: GET_SURVEY_ERROR,
+        data: error.response.data
+      };
+    }
 
     dispatch(action);
   };
