@@ -3,11 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
-import Grid from '@material-ui/core/Grid';
 import Typography from "@material-ui/core/Typography";
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -67,7 +64,7 @@ class SurveyorHome extends React.Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   const { surveyState } = state;
   return { surveys: surveyState.surveys };
 }

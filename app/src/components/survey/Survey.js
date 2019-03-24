@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
 import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
@@ -164,7 +162,7 @@ class Survey extends React.Component {
   }
 
   buildCompleteCard() {
-    const { classes, theme, survey } = this.props;
+    const { classes, survey } = this.props;
 
     return (
       <Card className={classes.card}>

@@ -3,7 +3,6 @@ import {
   GET_SURVEY_SUCCESS,
   GET_SURVEY_RESPONSES_SUCCESS
 } from '../constants/actions-types';
-import Survey from '../models/survey';
 
 export function surveyState(state = {}, action) {
   switch (action.type) {
