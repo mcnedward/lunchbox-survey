@@ -1,6 +1,7 @@
 import {
   GET_ALL_SURVEYS_SUCCESS,
-  GET_SURVEY_SUCCESS
+  GET_SURVEY_SUCCESS,
+  GET_SURVEY_RESPONSES_SUCCESS
 } from "../constants/actions-types";
 import Survey from "../models/survey";
 import { Question, QuestionTypes } from "../models/question";
@@ -48,6 +49,38 @@ export function getSurveyById(id) {
     const survey = surveys.find(s => s.id === id);
     let action = {
       type: GET_SURVEY_SUCCESS,
+      data: survey
+    };
+
+    dispatch(action);
+  };
+}
+
+export function getSurveyResponses(id) {
+  return async dispatch => {
+    const surveys = await fetchSurveys();
+
+    const survey = surveys.find(s => s.id === id);
+
+    for (let question of survey.questions) {
+      for (let i = 0; i < 8; i++) {
+        let response;
+        if (question.type === QuestionTypes.Text) {
+          response = 'Some long response goes here. Hopefully this will never be too long that it is hard to read, but we will see. Here we go, here is your answer.'
+        }
+        else if (question.type === QuestionTypes.Choice) {
+          response = question.options[0];
+        }
+        else if (question.type === QuestionTypes.Bool) {
+          response = true;
+        }
+
+        question.responses.push(response);
+      }
+    }
+
+    let action = {
+      type: GET_SURVEY_RESPONSES_SUCCESS,
       data: survey
     };
 

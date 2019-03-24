@@ -41,24 +41,20 @@ class SurveyorHome extends React.Component {
       'You haven\'t created any surveys yet!' :
       'Surveys created by you';
 
-    let items = [];
-    for (let survey of surveys) {
-      let to = `/surveyor/surveys/${survey.id}`;
-      let el = (
-        <ListItem button component={Link} to={to} key={survey.id}>
-          <ListItemText primary={survey.name} />
-        </ListItem>
-      );
-      items.push(el);
-    }
-
     return (
       <div>
         <Typography color="primary" variant="h4" className={classes.padding}>
           {title}
         </Typography>
         <List component="nav">
-          {items}
+          {surveys.map(survey => {
+            let to = `/surveyor/surveys/${survey.id}`;
+            return (
+              <ListItem button component={Link} to={to} key={survey.id}>
+                <ListItemText primary={survey.name} />
+              </ListItem>
+            )
+          })}
         </List>
 
         <div className={classes.padding}>

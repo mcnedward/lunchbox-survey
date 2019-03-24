@@ -48,7 +48,7 @@ class App extends React.Component {
                   <Route path="/survey/:id" exact component={Survey} />
                   <Route path="/surveyor/" exact component={SurveyorHome} />
                   <Route path="/surveyor/surveys" exact component={CreateSurvey} />
-                  <Route path="/surveyor/surveys:id" exact component={SurveyResponse} />
+                  <Route path="/surveyor/surveys/:id" exact component={SurveyResponse} />
                 </Paper>
               </Grid>
             </Grid>

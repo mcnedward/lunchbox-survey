@@ -11,73 +11,58 @@ import Icon from '@material-ui/core/Icon';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
-import { getAllSurveys } from '../../actions/surveyAction';
+import TextResponse from './TextResponse';
+import { getSurveyResponses } from '../../actions/surveyAction';
+import { QuestionTypes } from '../../models/question';
 
 const styles = theme => ({
-  padding: {
-    padding: theme.spacing.unit * 2
-  },
-  listStyle: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+  header: {
+    marginBottom: theme.spacing.unit * 2
   }
 })
 
-class SurveyorResponse extends React.Component {
+class SurveyResponse extends React.Component {
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(getAllSurveys());
+    const { dispatch, id } = this.props;
+    dispatch(getSurveyResponses(+id));
   }
 
   render() {
-    let { classes, surveys } = this.props;
+    let { classes, survey } = this.props;
 
-    if (surveys == null) surveys = [];
-
-    let title = surveys.length === 0 ?
-      'You haven\'t created any surveys yet!' :
-      'Surveys created by you';
-
-    let items = [];
-    for (let survey of surveys) {
-      let to = `/surveyor/survey/${survey.id}`;
-      let el = (
-        <ListItem button component={Link} to={to} key={survey.id}>
-          <ListItemText primary={survey.name} />
-        </ListItem>
+    let title;
+    if (survey == null) {
+      return (
+        <Typography color="primary" variant="h5" className={classes.header}>
+          {title}
+        </Typography>
       );
-      items.push(el);
     }
 
     return (
-      <Grid container justify="center" spacing={16}>
-        <Grid item>
-          <Paper>
-            <Typography color="primary" variant="h5" className={classes.padding}>
-              {title}
-            </Typography>
-            <List component="nav">
-              {items}
-            </List>
-
-            <div className={classes.padding}>
-              <Button fullWidth variant="contained" color="primary" component={Link} to="surveyor/surveys">
-                Create new survey
-              </Button>
-            </div>
-          </Paper>
-        </Grid>
-      </Grid>
+      <div>
+        <Typography color="primary" variant="h5" className={classes.header}>
+          {survey.name}
+        </Typography>
+        {survey.questions.map((question, index) => {
+          if (question.type === QuestionTypes.Text) {
+            return <TextResponse question={question} number={index + 1} key={index} />
+          }
+        })}
+      </div>
     )
   }
 }
 
 function mapStateToProps(state, ownProps) {
   const { surveyState } = state;
-  return { surveys: surveyState.surveys };
+  const { id } = ownProps.match.params;
+
+  return {
+    id,
+    survey: surveyState.survey
+  };
 }
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(SurveyorResponse)));
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(SurveyResponse)));

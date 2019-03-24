@@ -5,6 +5,8 @@ export class Question {
     this.question = question;
     this.options = options; // If multiple choice
     this.answer = '';
+
+    this.responses = [];
   }
 
   isAnswered() {
