@@ -20,7 +20,7 @@ const styles = theme => ({
     minWidth: '500px'
   },
   paper: {
-    padding: theme.spacing.unit
+    padding: theme.spacing.unit * 2
   }
 });
 
