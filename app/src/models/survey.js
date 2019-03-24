@@ -1,3 +1,5 @@
+import { Question } from './question'
+
 export default class Survey {
 
   constructor(id, name, questions = []) {
@@ -37,5 +39,16 @@ export default class Survey {
   submit() {
     this.answeredQuestions.push(this.currentQuestion);
     this.isComplete = true;
+  }
+
+  addQuestion() {
+    let id = this.questions.length + 1;
+    let question = new Question(id);
+    this.questions.push(question);
+  }
+
+  removeQuestion(question) {
+    let index = this.questions.indexOf(question);
+    this.questions.splice(index, 1);
   }
 }

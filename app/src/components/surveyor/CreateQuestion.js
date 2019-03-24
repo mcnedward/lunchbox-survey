@@ -12,10 +12,16 @@ import Button from "@material-ui/core/Button";
 import { QuestionTypes } from "../../models/question";
 import { withSnackbar } from 'notistack';
 import { List, ListItem, Paper, Divider } from "@material-ui/core";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({
   marginTop: {
     marginTop: theme.spacing.unit * 2
+  },
+  container: {
+    marginTop: theme.spacing.unit * 2,
+    padding: theme.spacing.unit * 2
   }
 });
 
@@ -30,6 +36,7 @@ class CreateQuestion extends React.Component {
     this.setTypeOfQuestion = this.setTypeOfQuestion.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.addOption = this.addOption.bind(this);
+    this.deleteQuestion = this.deleteQuestion.bind(this);
   }
 
   setTypeOfQuestion = event => {
@@ -56,8 +63,13 @@ class CreateQuestion extends React.Component {
     this.setState({ optionText: '' });
   }
 
+  deleteQuestion() {
+    const { question, onDeleteQuestion } = this.props;
+    onDeleteQuestion(question);
+  }
+
   render() {
-    const { classes, question } = this.props;
+    const { classes, question, number } = this.props;
 
     let questionField;
     if (question.type === QuestionTypes.Choice) {
@@ -75,9 +87,16 @@ class CreateQuestion extends React.Component {
     }
 
     return (
-      <div className={classes.marginTop}>
+      <Paper className={classes.container}>
         <Typography color="textSecondary" variant="h5" gutterBottom>
-          Question #{question.id}
+          <Grid container justify="space-between" alignItems="center">
+            <Grid item>Question #{number}</Grid>
+            <Grid item>
+              <IconButton aria-label="Delete" color="secondary" onClick={this.deleteQuestion}>
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
         </Typography>
 
         <Grid container spacing={0}>
@@ -112,7 +131,7 @@ class CreateQuestion extends React.Component {
             {questionField}
           </Grid>
         </Grid>
-      </div>
+      </Paper>
     );
   }
 
@@ -121,7 +140,6 @@ class CreateQuestion extends React.Component {
 
     return (
       <div>
-
         <Typography color="textSecondary" variant="h6" className={classes.marginTop}>
           Options
         </Typography>
@@ -130,7 +148,7 @@ class CreateQuestion extends React.Component {
             <ListItem key={index}>{option}</ListItem>
           ))}
         </List>
-        <Grid container spacing={16} alignItems="flex-end">
+        <Grid container spacing={8} alignItems="flex-end">
           <Grid item xs={10}>
             <TextField
               id="multipleChoice"
