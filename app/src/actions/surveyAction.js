@@ -69,7 +69,8 @@ export function getSurveyResponses(id) {
           response = 'Some long response goes here. Hopefully this will never be too long that it is hard to read, but we will see. Here we go, here is your answer.'
         }
         else if (question.type === QuestionTypes.Choice) {
-          response = question.options[0];
+          let random = Math.floor(Math.random() * question.options.length);
+          response = question.options[random];
         }
         else if (question.type === QuestionTypes.Bool) {
           response = true;
