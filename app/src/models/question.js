@@ -1,5 +1,5 @@
 export class Question {
-  constructor(id, type, question, options = []) {
+  constructor(id, type = QuestionTypes.Choice, question, options = []) {
     this.id = id;
     this.type = type; // Free text, multiple choice, true/false
     this.question = question;
