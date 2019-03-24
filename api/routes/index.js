@@ -13,9 +13,12 @@ router.get('/surveys', asyncMiddleware(async (req, res) => {
 }));
 
 router.get('/surveys/:id', asyncMiddleware(async (req, res) => {
-  console.log('Finding survey with id: ' + req.params.id)
+  const id = req.params.id
+  console.log('Finding survey with id: ' + id)
 
-  res.json({});
+  let survey = await Survey.findOne({ _id: id }).exec();
+
+  res.json(survey);
 }));
 
 module.exports = router;

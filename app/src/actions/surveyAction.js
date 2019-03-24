@@ -32,6 +32,16 @@ async function fetchSurveys() {
   return new Promise((resolve, reject) => resolve(mockData));
 }
 
+function errorAction(errorData, type) {
+  let error;
+  if (errorData.response) {
+    error = errorData.response.data;
+  } else {
+    error = errorData.message || 'Something went terribly wrong.'
+  }
+  return { type, data: error };
+}
+
 export function getAllSurveys() {
   return async dispatch => {
     let action;
@@ -45,10 +55,7 @@ export function getAllSurveys() {
         data: surveys
       };
     } catch (error) {
-      action = {
-        type: GET_ALL_SURVEYS_ERROR,
-        data: error.response.data
-      };
+      action = errorAction(error, GET_ALL_SURVEYS_ERROR);
     }
 
     dispatch(action);
@@ -60,16 +67,18 @@ export function getSurveyById(id) {
     let action;
     try {
       const response = await axios.get(`/api/surveys/${id}`);
+
+      let survey;
+      if (response.data != null) {
+        survey = new Survey(response.data);
+      }
       
       action = {
         type: GET_SURVEY_SUCCESS,
-        data: {}
+        data: survey
       };
     } catch (error) {
-      action = {
-        type: GET_SURVEY_ERROR,
-        data: error.response.data
-      };
+      action = errorAction(error, GET_SURVEY_ERROR);
     }
 
     dispatch(action);

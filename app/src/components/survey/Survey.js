@@ -46,7 +46,7 @@ class Survey extends React.Component {
 
   componentDidMount() {
     const { dispatch, id } = this.props;
-    dispatch(getSurveyById(+id));
+    dispatch(getSurveyById(id));
   }
   componentDidUpdate() {
     let { error } = this.props;

@@ -4,6 +4,12 @@ export default class Survey {
 
   constructor(data) {
     data && Object.assign(this, data);
+
+    if (this.questions == null) {
+      this.questions = [];
+    } else {
+      this.questions = this.questions.map(q => new Question(q));
+    }
     
     this.isComplete = false;
     this.numberOfQuestions = this.questions.length;

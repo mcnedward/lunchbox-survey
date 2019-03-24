@@ -24,7 +24,7 @@ class SurveyResponse extends React.Component {
 
   componentDidMount() {
     const { dispatch, id } = this.props;
-    dispatch(getSurveyResponses(+id));
+    dispatch(getSurveyResponses(id));
   }
 
   render() {

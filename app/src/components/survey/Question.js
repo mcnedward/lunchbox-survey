@@ -42,7 +42,7 @@ class Question extends React.Component {
       return this.buildText();
     } else if (question.type === QuestionTypes.Choice) {
       return this.buildRadio();
-    } else if (question.type === QuestionTypes.Bool) {
+    } else if (question.type === QuestionTypes.Bool || question.type === QuestionTypes.YesNo) {
       return this.buildBool();
     }
 
@@ -110,12 +110,12 @@ class Question extends React.Component {
           <FormControlLabel
             value="true"
             control={<Radio />}
-            label="True"
+            label={question.positiveLabel}
           />
           <FormControlLabel
             value="false"
             control={<Radio />}
-            label="False"
+            label={question.negativeLabel}
           />
         </RadioGroup>
       </FormControl>

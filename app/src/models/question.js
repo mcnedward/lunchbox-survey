@@ -1,21 +1,20 @@
 export class Question {
-  constructor(id, type = QuestionTypes.Text, question, options = []) {
-    this.id = id;   // TODO See about getting rid of this
-    this.type = type; // Free text, multiple choice, true/false
-    this.question = question;
-    this.options = options; // If multiple choice
-    this.answer = '';
+  constructor(data) {
+    data && Object.assign(this, data);
 
-    this.responses = [];
+    this.positiveLabel = this.type === QuestionTypes.Bool ? 'True' : 'Yes';
+    this.negativeLabel = this.type === QuestionTypes.Bool ? 'False' : 'No';
   }
 
   isAnswered() {
     return this.answer != null && this.answer !== '';
   }
+
 }
 
 export const QuestionTypes = {
   Text: "Text",
   Choice: "Choice",
-  Bool: "Bool"
+  Bool: "Bool",
+  YesNo: "YesNo"
 };
