@@ -7,14 +7,9 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import MobileStepper from '@material-ui/core/MobileStepper';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import Icon from '@material-ui/core/Icon';
-import SurveyCard from './SurveyCard';
+import SurveyForm from './SurveyForm';
 
 import { getSurveyById } from "../../actions/surveyAction";
-import Question from "./Question";
 
 const styles = theme => ({
   btnReturn: {
@@ -34,7 +29,7 @@ class Survey extends React.Component {
     dispatch(getSurveyById(id));
   }
   componentDidUpdate() {
-    let { error, survey } = this.props;
+    let { error } = this.props;
 
     if (error) {
       this.props.enqueueSnackbar(error, { variant: 'error' });
@@ -73,7 +68,7 @@ class Survey extends React.Component {
     } else if (survey.isComplete) {
       contents = this.buildCompleteCard()
     } else {
-      contents = <SurveyCard survey={survey}></SurveyCard>;
+      contents = <SurveyForm survey={survey}></SurveyForm>;
     }
 
     return (

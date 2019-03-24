@@ -97,6 +97,9 @@ class Question extends React.Component {
   buildBool() {
     const { classes, question } = this.props;
 
+    let positiveLabel = question.type === QuestionTypes.Bool ? 'True' : 'Yes';
+    let negativeLabel = question.type === QuestionTypes.Bool ? 'False' : 'No';
+
     return (
       <FormControl component="fieldset" className={classes.formControl}>
         <FormLabel component="legend">{question.question}</FormLabel>
@@ -110,12 +113,12 @@ class Question extends React.Component {
           <FormControlLabel
             value="true"
             control={<Radio />}
-            label={question.positiveLabel}
+            label={positiveLabel}
           />
           <FormControlLabel
             value="false"
             control={<Radio />}
-            label={question.negativeLabel}
+            label={negativeLabel}
           />
         </RadioGroup>
       </FormControl>

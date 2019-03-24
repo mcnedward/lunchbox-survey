@@ -11,8 +11,7 @@ const QuestionSchema = new Schema({
     required: [true, 'Question is required']
   },
   options: [String],
-  answer: String,
-  responses: [String]
+  answer: String
 });
 
 const Question = mongoose.model('question', QuestionSchema);

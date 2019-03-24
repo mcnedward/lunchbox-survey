@@ -1,10 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Link } from 'react-router-dom';
 import { withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import MobileStepper from '@material-ui/core/MobileStepper';
@@ -13,7 +8,6 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Icon from '@material-ui/core/Icon';
 import { withSnackbar } from 'notistack';
 
-import { getSurveyById } from "../../actions/surveyAction";
 import Question from "./Question";
 
 const styles = theme => ({
@@ -80,9 +74,15 @@ class SurveyCard extends React.Component {
       this.props.enqueueSnackbar('Please answer the question before submitting.', { variant: 'error' });
       return;
     }
+    answeredQuestions.push(currentQuestion);          // Add to answered list
 
     // POST
-
+    const surveyResponse = {
+      surveyId: survey._id,
+      name: survey.name,
+      answers: answeredQuestions
+    }
+    console.log(surveyResponse)
   }
 
   render() {
