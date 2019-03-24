@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import { withSnackbar } from 'notistack';
 
 import { getAllSurveys } from '../../actions/surveyAction';
 
@@ -26,6 +27,14 @@ class SurveyHome extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getAllSurveys());
+  }
+
+  componentDidUpdate() {
+    let { error } = this.props;
+
+    if (error) {
+      this.props.enqueueSnackbar(error, { variant: 'error' });
+    }
   }
 
   render() {
@@ -61,9 +70,13 @@ class SurveyHome extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   const { surveyState } = state;
-  return { surveys: surveyState.surveys };
+
+  return {
+    surveys: surveyState.surveys,
+    error: surveyState.error
+  };
 }
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(SurveyHome)));
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(withSnackbar(SurveyHome))));

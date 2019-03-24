@@ -1,0 +1,30 @@
+{
+  "name": "lunchbox-survey",
+  "version": "1.0.0",
+  "description": "Survey application",
+  "main": "index.js",
+  "scripts": {
+    "start-api": "nodemon api/index.js",
+    "start": "concurrently \"npm run start-api\" \"cd app && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcnedward/lunchbox-survey.git"
+  },
+  "author": "Edward McNealy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mcnedward/lunchbox-survey/issues"
+  },
+  "homepage": "https://github.com/mcnedward/lunchbox-survey#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.19"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10"
+  }
+}

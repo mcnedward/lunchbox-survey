@@ -1,10 +1,12 @@
 import {
   GET_ALL_SURVEYS_SUCCESS,
+  GET_ALL_SURVEYS_ERROR,
   GET_SURVEY_SUCCESS,
   GET_SURVEY_RESPONSES_SUCCESS
 } from "../constants/actions-types";
 import Survey from "../models/survey";
 import { Question, QuestionTypes } from "../models/question";
+import axios from 'axios';
 
 function createSurvey(id, name) {
   let questions = [];
@@ -31,12 +33,20 @@ async function fetchSurveys() {
 
 export function getAllSurveys() {
   return async dispatch => {
-    const mockData = await fetchSurveys();
-
-    let action = {
-      type: GET_ALL_SURVEYS_SUCCESS,
-      data: mockData
-    };
+    let action;
+    try {
+      const response = await axios.get('/api/surveys');
+      
+      action = {
+        type: GET_ALL_SURVEYS_SUCCESS,
+        data: []
+      };
+    } catch (error) {
+      action = {
+        type: GET_ALL_SURVEYS_ERROR,
+        data: error.response.data
+      };
+    }
 
     dispatch(action);
   };
