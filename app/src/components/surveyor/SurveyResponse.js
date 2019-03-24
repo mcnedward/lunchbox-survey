@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import Typography from "@material-ui/core/Typography";
 import TextResponse from './TextResponse';
 import ChoiceResponse from './ChoiceResponse';
+import BoolResponse from './BoolResponse';
 import { getSurveyResponses } from '../../actions/surveyAction';
 import { QuestionTypes } from '../../models/question';
 
@@ -43,6 +44,10 @@ class SurveyResponse extends React.Component {
             return <TextResponse question={question} number={index + 1} key={index} />
           } else if (question.type === QuestionTypes.Choice) {
             return <ChoiceResponse question={question} number={index + 1} key={index} />
+          } else if (question.type === QuestionTypes.Bool) {
+            return <BoolResponse question={question} number={index + 1} key={index} />
+          } else {
+            return <div>Could not find the question...</div>
           }
         })}
       </div>

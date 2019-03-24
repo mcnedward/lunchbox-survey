@@ -73,7 +73,7 @@ export function getSurveyResponses(id) {
           response = question.options[random];
         }
         else if (question.type === QuestionTypes.Bool) {
-          response = true;
+          response = i % 3 === 0;
         }
 
         question.responses.push(response);
