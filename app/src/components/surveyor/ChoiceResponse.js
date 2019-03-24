@@ -5,10 +5,15 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ResponsePercent from './ResponsePercent';
 
 const styles = theme => ({
   container: {
     marginBottom: theme.spacing.unit * 2
+  },
+  progressContainer: {
+    paddingLeft: theme.spacing.unit * 3,
+    paddingRight: theme.spacing.unit * 3
   }
 })
 
@@ -31,20 +36,12 @@ class ChoiceResponse extends React.Component {
           #{number} - {question.question}
         </Typography>
 
-        <div>
-          <List>
-            {question.options.map((option, index) => {
-              let count = optionMap[option];
-              let text = `${option}: ${count}/${question.responses.length}`
-              return (
-                <div key={index}>
-                  <ListItem>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                </div>
-              )
-            })}
-          </List>
+        <div className={classes.progressContainer}>
+          {question.options.map((option, index) => {
+            let count = optionMap[option];
+            let text = `${option}: ${count}/${question.responses.length}`
+            return <ResponsePercent text={option} value={count} total={question.responses.length} />;
+          })}
         </div>
       </div>
     )

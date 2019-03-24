@@ -1,14 +1,15 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import ResponsePercent from './ResponsePercent';
 
 const styles = theme => ({
   container: {
     marginBottom: theme.spacing.unit * 2
+  },
+  progressContainer: {
+    paddingLeft: theme.spacing.unit * 3,
+    paddingRight: theme.spacing.unit * 3
   }
 })
 
@@ -17,15 +18,14 @@ class BoolResponse extends React.Component {
   render() {
     let { classes, question, number } = this.props;
 
+    const { responses } = question;
+
     let trueCount = 0;
     let falseCount = 0;
-    for (let response of question.responses) {
+    for (let response of responses) {
       if (response) trueCount++;
       else falseCount++;
     }
-
-    let trueText = `True: ${trueCount}/${question.responses.length}`;
-    let falseText = `False: ${falseCount}/${question.responses.length}`;
 
     return (
       <div className={classes.container}>
@@ -33,15 +33,9 @@ class BoolResponse extends React.Component {
           #{number} - {question.question}
         </Typography>
 
-        <div>
-          <List>
-            <ListItem>
-              <ListItemText primary={trueText} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary={falseText} />
-            </ListItem>
-          </List>
+        <div className={classes.progressContainer}>
+          <ResponsePercent text="True" value={trueCount} total={responses.length} />
+          <ResponsePercent text="False" value={falseCount} total={responses.length} />
         </div>
       </div>
     )
