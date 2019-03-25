@@ -43,7 +43,7 @@ class SurveyForm extends React.Component {
     if (survey == null) {
       return (
         <div>
-          <Typography color="textPrimary" variant="h4" gutterBottom>
+          <Typography color="primary" variant="h4" gutterBottom>
             Could not find the survey
           </Typography>
           {btnReturn}

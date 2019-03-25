@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { withSnackbar } from 'notistack';
-import getSurveyResponses from '../../actions/getSurveyResponsesAction';
+import getSurveyResponses from '../../actions/surveyResponse/getSurveyResponsesAction';
+import getSurvey from '../../actions/survey/getSurveyAction';
 
 const styles = theme => ({
   header: {
@@ -20,6 +21,8 @@ class SurveyResponse extends React.Component {
 
   componentDidMount() {
     const { dispatch, id } = this.props;
+    // Get the survey and all of the responses associated with it
+    dispatch(getSurvey(id));
     dispatch(getSurveyResponses(id));
   }
   componentDidUpdate() {
@@ -30,22 +33,46 @@ class SurveyResponse extends React.Component {
   }
 
   render() {
-    let { classes, surveyResponses } = this.props;
+    let { classes, isLoadingSurvey, isLoadingSurveyResponses, survey, surveyResponses } = this.props;
 
-    if (surveyResponses == null || surveyResponses.length === 0) {
+    let btnReturn = (
+      <Button component={Link} to="/surveyor" color="primary" size="small" className={classes.btnReturn}>
+          Back
+      </Button>
+    );
+
+    if (isLoadingSurvey || isLoadingSurveyResponses) {
       return (
-        <Typography color="primary" variant="h4" className={classes.header}>
-          Could not find any responses
-        </Typography>
+        <div>
+          <Typography color="primary" variant="h4" gutterBottom>
+            Loading survey responses
+          </Typography>
+          {btnReturn}
+        </div>
       );
     }
 
-    let name = surveyResponses[0].name;
+    let name = (
+      <Typography color="primary" variant="h4" gutterBottom>
+        {survey.name}
+      </Typography>
+    )
+
+    if (surveyResponses == null || surveyResponses.length === 0) {
+      return (
+        <div>
+          {name}
+          <Typography color="primary" variant="h4" className={classes.header}>
+            Could not find any responses
+          </Typography>
+          {btnReturn}
+        </div>
+      );
+    }
+
     return (
       <div>
-        <Typography color="primary" variant="h4" className={classes.header}>
-          {name}
-        </Typography>
+        {name}
         {/* {survey.answeredQuestions.map((question, index) => {
           if (question.type === QuestionTypes.Text) {
             return <TextResponse question={question} number={index + 1} key={index} />
@@ -57,22 +84,22 @@ class SurveyResponse extends React.Component {
             return <div>Could not find the question...</div>
           }
         })} */}
-        <Button component={Link} to="/surveyor" color="primary" size="small" className={classes.btnReturn}>
-          Back
-        </Button>
+        {btnReturn}
       </div>
     )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const { getSurveyResponsesState } = state;
+  const { getSurveyState, getSurveyResponsesState } = state;
   const { id } = ownProps.match.params;
 
   return {
     id,
+    survey: getSurveyState.survey,
+    isLoadingSurvey: getSurveyState.isLoading == null ? true : getSurveyState.isLoading,
     surveyResponses: getSurveyResponsesState.surveyResponses,
-    isLoading: getSurveyResponsesState.isLoading,
+    isLoadingSurveyResponses: getSurveyResponsesState.isLoading == null ? true : getSurveyResponsesState.isLoading,
     error: getSurveyResponsesState.error
   };
 }
