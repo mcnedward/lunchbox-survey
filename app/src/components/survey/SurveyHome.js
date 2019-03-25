@@ -9,7 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withSnackbar } from 'notistack';
 
-import { getAllSurveys } from '../../actions/surveyAction';
+import getSurveys from '../../actions/survey/getSurveysAction';
 
 const styles = theme => ({
   padding: {
@@ -26,12 +26,11 @@ class SurveyHome extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(getAllSurveys());
+    dispatch(getSurveys());
   }
 
   componentDidUpdate() {
     let { error } = this.props;
-
     if (error) {
       this.props.enqueueSnackbar(error, { variant: 'error' });
     }
@@ -67,11 +66,12 @@ class SurveyHome extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { surveyState } = state;
+  const { getSurveysState } = state;
 
   return {
-    surveys: surveyState.surveys,
-    error: surveyState.error
+    surveys: getSurveysState.surveys,
+    isLoading: getSurveysState.isLoading,
+    error: getSurveysState.error
   };
 }
 

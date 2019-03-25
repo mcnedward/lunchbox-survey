@@ -8,8 +8,7 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
-import { getAllSurveys } from '../../actions/surveyAction';
+import getSurveys from '../../actions/survey/getSurveysAction';
 
 const styles = theme => ({
   listStyle: {
@@ -23,7 +22,14 @@ class SurveyorHome extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(getAllSurveys());
+    dispatch(getSurveys());
+  }
+
+  componentDidUpdate() {
+    let { error } = this.props;
+    if (error) {
+      this.props.enqueueSnackbar(error, { variant: 'error' });
+    }
   }
 
   render() {
@@ -62,8 +68,12 @@ class SurveyorHome extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { surveyState } = state;
-  return { surveys: surveyState.surveys };
+  const { getSurveysState } = state;
+  return {
+    surveys: getSurveysState.surveys,
+    error: getSurveysState.error,
+    isSubmitted: getSurveysState.isSubmitted
+  };
 }
 
 export default withRouter(connect(mapStateToProps)(withStyles(styles)(SurveyorHome)));

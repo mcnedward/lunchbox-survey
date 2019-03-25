@@ -2,7 +2,7 @@ import {
   POST_SURVEY_REQUEST,
   POST_SURVEY_SUCCESS,
   POST_SURVEY_ERROR
-} from "../constants/actions-types";
+} from "../../constants/actions-types";
 
 export function postSurveyState(state = {}, action) {
   switch (action.type) {

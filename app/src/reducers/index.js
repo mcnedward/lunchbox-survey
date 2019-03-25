@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
-import { surveyState } from './surveyReducer';
-import { postSurveyState } from './postSurveyReducer';
+import { getSurveyState } from './survey/getSurveyReducer';
+import { getSurveysState } from './survey/getSurveysReducer';
+import { postSurveyState } from './survey/postSurveyReducer';
 import { surveyResponseState } from './surveyResponseReducer';
 import { getSurveyResponsesState } from './getSurveyResponsesReducer';
 
 const rootReducer = combineReducers({
-  surveyState,
+  getSurveyState,
+  getSurveysState,
   postSurveyState,
   surveyResponseState,
   getSurveyResponsesState

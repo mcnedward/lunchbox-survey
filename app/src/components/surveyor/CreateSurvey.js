@@ -11,7 +11,7 @@ import { withSnackbar } from 'notistack';
 import CreateQuestion from './CreateQuestion'
 import { QuestionTypes } from "../../models/question";
 import uuid from 'uuid';
-import addSurvey from '../../actions/postSurveyAction';
+import addSurvey from '../../actions/survey/postSurveyAction';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({

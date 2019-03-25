@@ -2,9 +2,9 @@ import {
   POST_SURVEY_REQUEST,
   POST_SURVEY_SUCCESS,
   POST_SURVEY_ERROR
-} from "../constants/actions-types";
+} from "../../constants/actions-types";
 import axios from 'axios';
-import handleError from './handleError'
+import handleError from '../handleError'
 
 export default function addSurvey(survey) {
   return async dispatch => {

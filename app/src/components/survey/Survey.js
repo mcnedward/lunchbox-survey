@@ -7,8 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SurveyForm from './SurveyForm';
-
-import { getSurveyById } from "../../actions/surveyAction";
+import getSurvey from "../../actions/survey/getSurveyAction";
 
 const styles = theme => ({
   btnReturn: {
@@ -24,7 +23,7 @@ class Survey extends React.Component {
 
   componentDidMount() {
     const { dispatch, id } = this.props;
-    dispatch(getSurveyById(id));
+    dispatch(getSurvey(id));
   }
   componentDidUpdate() {
     let { error } = this.props;
@@ -84,13 +83,13 @@ class Survey extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { surveyState, surveyResponseState } = state;
+  const { getSurveyState, surveyResponseState } = state;
   const { id } = ownProps.match.params;
 
   return {
     id,
-    survey: surveyState.survey,
-    error: surveyState.error,
+    survey: getSurveyState.survey,
+    error: getSurveyState.error,
     isSubmitted: surveyResponseState.isSubmitted
   };
 }
