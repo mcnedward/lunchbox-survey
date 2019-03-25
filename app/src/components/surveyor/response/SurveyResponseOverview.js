@@ -3,7 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import TextResponse from './TextResponse';
 import ChoiceResponse from './ChoiceResponse';
 import BoolResponse from './BoolResponse';
-import { QuestionTypes } from '../../../models/question';
+import QuestionTypes from '../../../constants/question-types';
 
 class SurveyResponseOverview extends React.Component {
 

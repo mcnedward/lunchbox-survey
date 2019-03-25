@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import ResponsePercent from './ResponsePercent';
-import { QuestionTypes } from '../../../models/question';
+import QuestionTypes from '../../../constants/question-types';
 
 const styles = theme => ({
   container: {

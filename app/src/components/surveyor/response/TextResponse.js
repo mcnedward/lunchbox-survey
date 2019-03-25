@@ -1,7 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
-import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -31,16 +30,9 @@ class TextResponse extends React.Component {
         <div className={classes.responseList}>
           <List>
             {question.answers.map((answer, index) => (
-              <div key={index}>
-                <ListItem>
-                  <ListItemText primary={answer} />
-                </ListItem>
-                {
-                  index < question.answers.length - 1 ? 
-                  <Divider component="li" /> :
-                  ''
-                }
-              </div>
+              <ListItem divider key={index}>
+                <ListItemText primary={answer} />
+              </ListItem>
             ))}
           </List>
         </div>

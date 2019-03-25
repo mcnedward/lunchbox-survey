@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from '@material-ui/core/TextField';
 import { withSnackbar } from 'notistack';
 import CreateQuestion from './CreateQuestion'
-import { QuestionTypes } from "../../models/question";
+import QuestionTypes from "../../constants/question-types";
 import uuid from 'uuid';
 import addSurvey from '../../actions/survey/postSurveyAction';
 import CircularProgress from '@material-ui/core/CircularProgress';

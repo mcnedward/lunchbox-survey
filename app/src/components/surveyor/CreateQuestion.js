@@ -9,7 +9,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Button from "@material-ui/core/Button";
-import { QuestionTypes } from "../../models/question";
+import QuestionTypes from "../../constants/question-types";
 import { withSnackbar } from 'notistack';
 import { List, ListItem, Paper } from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
