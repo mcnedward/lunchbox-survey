@@ -1,5 +1,6 @@
 import React from 'react';
 import Typography from "@material-ui/core/Typography";
+import { withStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,7 +11,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-
+const styles = theme => ({
+  dialog: {
+    minWidth: '500px',
+  }
+})
 class SurveyResponseList extends React.Component {
   state = {
     open: false,
@@ -37,7 +42,7 @@ class SurveyResponseList extends React.Component {
   };
 
   render() {
-    let { survey, surveyResponses } = this.props;
+    let { classes, survey, surveyResponses } = this.props;
 
     return (
       <div>
@@ -62,23 +67,22 @@ class SurveyResponseList extends React.Component {
           onClose={this.handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
+          classes={{paper: classes.dialog}}
         >
           <DialogTitle id="alert-dialog-title">{survey.name}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {
-                this.state.questions.map((q, index) => (
-                  <div key={index}>
-                    <Typography color="textPrimary" variant="h5" gutterBottom>
-                      #{index + 1} {q.question}
-                    </Typography>
-                    <Typography color="textSecondary" variant="h6" gutterBottom>
-                      {q.answer}
-                    </Typography>
-                  </div>
-                ))
-              }
-            </DialogContentText>
+            {
+              this.state.questions.map((q, index) => (
+                <div key={index}>
+                  <Typography color="textPrimary" variant="h5" gutterBottom>
+                    #{index + 1} {q.question}
+                  </Typography>
+                  <Typography color="textSecondary" variant="h6" gutterBottom>
+                    {q.answer}
+                  </Typography>
+                </div>
+              ))
+            }
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary" autoFocus>
@@ -91,4 +95,4 @@ class SurveyResponseList extends React.Component {
   }
 }
 
-export default SurveyResponseList;
+export default withStyles(styles)(SurveyResponseList);
