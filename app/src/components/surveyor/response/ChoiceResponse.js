@@ -34,10 +34,12 @@ class ChoiceResponse extends React.Component {
         </Typography>
 
         <div className={classes.progressContainer}>
-          {question.options.map((option) => {
-            let count = optionMap[option];
-            return <ResponsePercent text={option} value={count} total={answers.length} />;
-          })}
+          {
+            question.options.map((option, index) => {
+              let count = optionMap[option];
+              return <ResponsePercent text={option} value={count} total={answers.length} key={index} />;
+            })
+          }
         </div>
       </div>
     )

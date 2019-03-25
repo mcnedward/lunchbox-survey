@@ -24,6 +24,8 @@ router.post('/surveys', asyncMiddleware(async (req, res) => {
     return res.send('You need to provide data for the survey.');
   }
 
+  survey.createdOn = new Date();
+
   let result = await Survey.create(survey);
   res.json(result);
 }));
@@ -42,6 +44,8 @@ router.post('/surveyresponses', asyncMiddleware(async (req, res) => {
     res.status(400);
     return res.send('You need to provide a response to the survey.');
   }
+
+  surveyResponse.respondedOn = new Date();
 
   let result = await SurveyResponse.create(surveyResponse);
   res.json(result);

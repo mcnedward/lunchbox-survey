@@ -10,7 +10,8 @@ const SurveySchema = new Schema({
   questions: {
     type: [QuestionSchema],
     required: [true, 'Questions are required']
-  }
+  },
+  createdOn: Date
 })
 
 const Survey = mongoose.model('survey', SurveySchema);

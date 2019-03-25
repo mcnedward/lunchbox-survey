@@ -15,7 +15,8 @@ const SurveyResponseSchema = new Schema({
     type: String,
     required: [true, 'SurveyId is required']
   },
-  answers: [AnswerSchema]
+  answers: [AnswerSchema],
+  respondedOn: Date
 })
 
 const SurveyResponse = mongoose.model('surveyResponse', SurveyResponseSchema);
