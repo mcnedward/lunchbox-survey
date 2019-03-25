@@ -8,9 +8,9 @@ import { withSnackbar } from 'notistack';
 import TextResponse from './TextResponse';
 import ChoiceResponse from './ChoiceResponse';
 import BoolResponse from './BoolResponse';
-import { QuestionTypes } from '../../models/question';
-import getSurveyResponses from '../../actions/surveyResponse/getSurveyResponsesAction';
-import getSurvey from '../../actions/survey/getSurveyAction';
+import { QuestionTypes } from '../../../models/question';
+import getSurveyResponses from '../../../actions/surveyResponse/getSurveyResponsesAction';
+import getSurvey from '../../../actions/survey/getSurveyAction';
 
 const styles = theme => ({
   header: {

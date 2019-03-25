@@ -11,7 +11,7 @@ import SurveyHome from './survey/SurveyHome';
 import SurveyForm from './survey/SurveyForm';
 import SurveyorHome from './surveyor/SurveyorHome';
 import CreateSurvey from './surveyor/CreateSurvey';
-import SurveyResponse from './surveyor/SurveyResponse';
+import SurveyResponse from './surveyor/response/SurveyResponse';
 
 const styles = theme => ({
   link: {
