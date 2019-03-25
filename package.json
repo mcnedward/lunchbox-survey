@@ -1,9 +1,10 @@
 {
   "name": "lunchbox-survey",
   "version": "1.0.0",
-  "description": "Survey application",
+  "description": "Survey application with API and App",
   "main": "index.js",
   "scripts": {
+    "full-install": "npm install && cd app && npm install",
     "start-api": "nodemon api/index.js",
     "start": "concurrently \"npm run start-api\" \"cd app && npm start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
