@@ -6,7 +6,7 @@ import {
 import axios from 'axios';
 import handleError from '../handleError'
 
-export default function addSurvey(survey) {
+export default function postSurvey(survey) {
   return async dispatch => {
     dispatch({type: POST_SURVEY_REQUEST});
 

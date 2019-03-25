@@ -40,7 +40,6 @@ class SurveyForm extends React.Component {
         Return to home
       </Button>
     );
-    let contents;
     if (survey == null) {
       return (
         <div>
@@ -51,46 +50,37 @@ class SurveyForm extends React.Component {
         </div>
       );
     } else if (isSubmitted) {
-      contents = this.buildCompleteCard()
-    } else {
-      contents = <SurveyStepper survey={survey}></SurveyStepper>;
+      return (
+        <div>
+          <Typography color="primary" variant="h4" gutterBottom>
+            {survey.name}
+          </Typography>
+          <Typography color="textPrimary" variant="h5" gutterBottom>
+            Thank you for completing the survey!
+          </Typography>
+          {btnReturn}
+        </div>
+      )
     }
 
     return (
       <div>
-        {contents}
-        <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
-          Return to home
-        </Button>
+        <SurveyStepper survey={survey}></SurveyStepper>
+        {btnReturn}
       </div>
     );
-  }
-
-  buildCompleteCard() {
-    const { survey } = this.props;
-
-    return (
-      <div>
-        <Typography color="primary" variant="h4" gutterBottom>
-          {survey.name}
-        </Typography>
-        <Typography color="textPrimary" variant="h5" gutterBottom>
-          Thank you for completing the survey!
-        </Typography>
-      </div>
-    )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const { getSurveyState, surveyResponseState } = state;
+  const { getSurveyState, postSurveyResponseState } = state;
   const { id } = ownProps.match.params;
 
   return {
     id,
     survey: getSurveyState.survey,
     error: getSurveyState.error,
-    isSubmitted: surveyResponseState.isSubmitted
+    isSubmitted: postSurveyResponseState.isSubmitted
   };
 }
 

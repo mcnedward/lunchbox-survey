@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Icon from '@material-ui/core/Icon';
 import { withSnackbar } from 'notistack';
 import Question from "./Question";
-import { respondToSurvey } from '../../actions/surveyResponseAction';
+import postSurveyResponse from '../../actions/surveyResponse/postSurveyResponseAction';
 
 const styles = theme => ({
   surveyContents: {
@@ -107,24 +107,12 @@ class SurveyStepper extends React.Component {
       name: survey.name,
       answers
     }
-    dispatch(respondToSurvey(surveyResponse));
+    dispatch(postSurveyResponse(surveyResponse));
   }
 
   render() {
     const { classes, theme, survey, isLoading } = this.props;
     const { currentQuestion, currentStep, numberOfQuestions } = this.state;
-
-    let submitButton = '';
-    if (currentStep === numberOfQuestions - 1) {
-      submitButton = (
-        <div className={classes.submit}>
-          <Button fullWidth variant="contained" color="primary" onClick={this.submit} disabled={isLoading}>
-            Submit <Icon className={classes.rightIcon}>send</Icon>
-          </Button>
-          {isLoading ? <CircularProgress className={classes.spinner} /> : ''}
-        </div>
-      );
-    }
 
     return (
       <div>
@@ -136,7 +124,6 @@ class SurveyStepper extends React.Component {
             Question #{currentStep + 1}
           </Typography>
           <Question question={currentQuestion} />
-
         </div>
 
         <MobileStepper
@@ -157,18 +144,26 @@ class SurveyStepper extends React.Component {
             </Button>
           }
         />
-        {submitButton}
+        {
+          currentStep < numberOfQuestions - 1 ? '' :
+            <div className={classes.submit}>
+              <Button fullWidth variant="contained" color="primary" onClick={this.submit} disabled={isLoading}>
+                Submit <Icon className={classes.rightIcon}>send</Icon>
+              </Button>
+              {isLoading ? <CircularProgress className={classes.spinner} /> : ''}
+            </div>
+        }
       </div>
     );
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const { surveyResponseState } = state;
+  const { postSurveyResponseState } = state;
 
   return {
-    isLoading: surveyResponseState.isLoading,
-    error: surveyResponseState.error
+    isLoading: postSurveyResponseState.isLoading,
+    error: postSurveyResponseState.error
   };
 }
 
