@@ -78,6 +78,7 @@ class SurveyForm extends React.Component {
     }
     answers.push(answer);          // Add to answered list
     currentQuestion = survey.questions[++currentStep];
+    currentQuestion.answer = '';
 
     this.setState({ answers, currentQuestion, currentStep });
   }

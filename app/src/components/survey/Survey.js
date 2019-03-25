@@ -20,7 +20,6 @@ class Survey extends React.Component {
 
   constructor(props) {
     super(props);
-    this.submit = this.submit.bind(this);
   }
 
   componentDidMount() {
@@ -34,18 +33,23 @@ class Survey extends React.Component {
     }
   }
 
-  submit() {
-  }
-
   render() {
     const { classes, survey, isSubmitted } = this.props;
 
+    let btnReturn = (
+      <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
+        Return to home
+      </Button>
+    );
     let contents;
     if (survey == null) {
-      contents = (
-        <Typography color="textPrimary" variant="h4" gutterBottom>
-          Could not find the survey
-        </Typography>
+      return (
+        <div>
+          <Typography color="textPrimary" variant="h4" gutterBottom>
+            Could not find the survey
+          </Typography>
+          {btnReturn}
+        </div>
       );
     } else if (isSubmitted) {
       contents = this.buildCompleteCard()
@@ -68,10 +72,10 @@ class Survey extends React.Component {
 
     return (
       <div>
-        <Typography color="textPrimary" variant="h5" gutterBottom>
+        <Typography color="primary" variant="h4" gutterBottom>
           {survey.name}
         </Typography>
-        <Typography color="textPrimary" variant="h6" gutterBottom>
+        <Typography color="textPrimary" variant="h5" gutterBottom>
           Thank you for completing the survey!
         </Typography>
       </div>
