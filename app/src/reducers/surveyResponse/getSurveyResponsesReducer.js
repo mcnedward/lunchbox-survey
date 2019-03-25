@@ -2,7 +2,7 @@ import {
   GET_SURVEY_RESPONSES_REQUEST,
   GET_SURVEY_RESPONSES_SUCCESS,
   GET_SURVEY_RESPONSES_ERROR
-} from "../constants/actions-types";
+} from "../../constants/actions-types";
 
 export function getSurveyResponsesState(state = {}, action) {
   switch (action.type) {
