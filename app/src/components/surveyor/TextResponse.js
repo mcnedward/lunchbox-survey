@@ -9,11 +9,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 const styles = theme => ({
   container: {
     maxWidth: '600px',
-    marginBottom: theme.spacing.unit * 4
+    marginBottom: theme.spacing.unit * 2
   },
   responseList: {
     maxHeight: '250px',
-    overflowY: 'scroll'
+    overflowY: 'auto'
   }
 })
 
@@ -30,12 +30,16 @@ class TextResponse extends React.Component {
 
         <div className={classes.responseList}>
           <List>
-            {question.answers.map((response, index) => (
+            {question.answers.map((answer, index) => (
               <div key={index}>
                 <ListItem>
-                  <ListItemText primary={response} />
+                  <ListItemText primary={answer} />
                 </ListItem>
-                <Divider component="li" />
+                {
+                  index < question.answers.length - 1 ? 
+                  <Divider component="li" /> :
+                  ''
+                }
               </div>
             ))}
           </List>

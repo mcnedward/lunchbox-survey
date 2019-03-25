@@ -16,26 +16,27 @@ const styles = theme => ({
 class ChoiceResponse extends React.Component {
 
   render() {
-    let { classes, question, number } = this.props;
+    let { classes, question } = this.props;
+    const { answers } = question;
 
     let optionMap = {};
     for (let option of question.options) {
       optionMap[option] = 0;
     }
-    for (let response of question.responses) {
+    for (let response of answers) {
       optionMap[response] = optionMap[response] + 1;
     }
 
     return (
       <div className={classes.container}>
-        <Typography color="textPrimary" variant="h6" className={classes.padding}>
-          #{number} - {question.question}
+        <Typography color="textPrimary" variant="h5" className={classes.padding}>
+          #{question.number} - {question.question}
         </Typography>
 
         <div className={classes.progressContainer}>
           {question.options.map((option) => {
             let count = optionMap[option];
-            return <ResponsePercent text={option} value={count} total={question.responses.length} />;
+            return <ResponsePercent text={option} value={count} total={answers.length} />;
           })}
         </div>
       </div>

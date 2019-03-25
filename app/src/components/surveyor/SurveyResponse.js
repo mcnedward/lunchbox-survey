@@ -6,6 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { withSnackbar } from 'notistack';
 import TextResponse from './TextResponse';
+import ChoiceResponse from './ChoiceResponse';
+import BoolResponse from './BoolResponse';
 import { QuestionTypes } from '../../models/question';
 import getSurveyResponses from '../../actions/surveyResponse/getSurveyResponsesAction';
 import getSurvey from '../../actions/survey/getSurveyAction';
@@ -80,6 +82,7 @@ class SurveyResponse extends React.Component {
         number: i + 1,
         type: question.type,
         question: question.question,
+        options: question.options,
         answers: []
       };
     }
@@ -93,26 +96,24 @@ class SurveyResponse extends React.Component {
     }
 
     let questions = Object.values(questionMap).sort((a, b) => a.number - b.number);
-    
+
     return (
       <div>
         {name}
         {questions.map((question, index) => {
           if (question.type === QuestionTypes.Text) {
             return <TextResponse question={question} key={question.id} />
-          }
-          else {
+          } else if (question.type === QuestionTypes.Choice) {
+            return <ChoiceResponse question={question} key={question.id} />
+          } else if (question.type === QuestionTypes.Bool || question.type === QuestionTypes.YesNo) {
+            return <BoolResponse question={question} key={question.id} />
+          } else {
             return <div key={index}>Could not find the question...</div>
           }
         })}
         {btnReturn}
       </div>
     )
-    //  {/* else if (question.type === QuestionTypes.Choice) {
-    //   return <ChoiceResponse question={question} number={index + 1} key={index} />
-    // } else if (question.type === QuestionTypes.Bool) {
-    //   return <BoolResponse question={question} number={index + 1} key={index} />
-    // } */}
   }
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import ResponsePercent from './ResponsePercent';
+import { QuestionTypes } from '../../models/question';
 
 const styles = theme => ({
   container: {
@@ -16,26 +17,28 @@ const styles = theme => ({
 class BoolResponse extends React.Component {
 
   render() {
-    let { classes, question, number } = this.props;
-
-    const { responses } = question;
+    let { classes, question } = this.props;
+    const { answers } = question;
 
     let trueCount = 0;
     let falseCount = 0;
-    for (let response of responses) {
+    for (let response of answers) {
       if (response) trueCount++;
       else falseCount++;
     }
 
+    let positiveLabel = question.type === QuestionTypes.Bool ? 'True' : 'Yes';
+    let negativeLabel = question.type === QuestionTypes.Bool ? 'False' : 'No';
+
     return (
       <div className={classes.container}>
-        <Typography color="textPrimary" variant="h6" className={classes.padding}>
-          #{number} - {question.question}
+        <Typography color="textPrimary" variant="h5" className={classes.padding}>
+          #{question.number} {question.question}
         </Typography>
 
         <div className={classes.progressContainer}>
-          <ResponsePercent text="True" value={trueCount} total={responses.length} />
-          <ResponsePercent text="False" value={falseCount} total={responses.length} />
+          <ResponsePercent text={positiveLabel} value={trueCount} total={answers.length} />
+          <ResponsePercent text={negativeLabel} value={falseCount} total={answers.length} />
         </div>
       </div>
     )
