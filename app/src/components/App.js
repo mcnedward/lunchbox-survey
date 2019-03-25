@@ -12,8 +12,12 @@ import SurveyForm from './survey/SurveyForm';
 import SurveyorHome from './surveyor/SurveyorHome';
 import CreateSurvey from './surveyor/CreateSurvey';
 import SurveyResponse from './surveyor/response/SurveyResponse';
+import { Button } from '@material-ui/core';
 
 const styles = theme => ({
+  block: {
+    display: 'inline-block'
+  },
   link: {
     textDecoration: 'none',
     color: theme.palette.primary.main
@@ -38,9 +42,22 @@ class App extends React.Component {
       <div>
         <AppBar position="static" color="default">
           <Toolbar>
-            <Typography variant="h6" color="inherit">
-              <Link to="/" className={classes.link}>Lunchbox | Survey</Link>
-            </Typography>
+            <Grid container justify="space-between">
+              <Grid item>
+                <Typography variant="h6" color="inherit" className={classes.block}>
+                  <Link to="/" className={classes.link}>Lunchbox | Survey</Link>
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="h6" color="inherit" className={classes.block}>
+                  <Button to="/" component={Link} className={classes.link}>Surveys</Button>
+                </Typography>
+                <Typography variant="h6" color="inherit" className={classes.block}>
+                  <Button to="/surveyor" component={Link} className={classes.link}>Surveyor</Button>
+                </Typography>
+              </Grid>
+            </Grid>
+
           </Toolbar>
         </AppBar>
 
