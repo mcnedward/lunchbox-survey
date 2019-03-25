@@ -53,9 +53,11 @@ class SurveyHome extends React.Component {
         <List component="nav">
           {surveys.map(survey => {
             let to = `/survey/${survey._id}`;
+            let date = new Date(survey.createdOn).toUTCString();
+            let text = `${survey.name} - ${date}`;
             return (
               <ListItem button component={Link} to={to} key={survey._id}>
-                <ListItemText primary={survey.name} />
+                <ListItemText primary={text} />
               </ListItem>
             )
           })}
