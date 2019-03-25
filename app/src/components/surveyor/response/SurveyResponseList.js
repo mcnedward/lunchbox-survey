@@ -1,10 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -13,14 +9,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { withSnackbar } from 'notistack';
-import SurveyResponseOverview from './SurveyResponseOverview';
-import { QuestionTypes } from '../../../models/question';
-import getSurveyResponses from '../../../actions/surveyResponse/getSurveyResponsesAction';
-import getSurvey from '../../../actions/survey/getSurveyAction';
 
-const styles = theme => ({
-})
 
 class SurveyResponseList extends React.Component {
   state = {
@@ -48,7 +37,7 @@ class SurveyResponseList extends React.Component {
   };
 
   render() {
-    let { classes, survey, surveyResponses } = this.props;
+    let { survey, surveyResponses } = this.props;
 
     return (
       <div>
@@ -60,7 +49,6 @@ class SurveyResponseList extends React.Component {
           {surveyResponses.map((response, index) => {
             let date = new Date(response.respondedOn).toUTCString();
             let text = `Response ${index + 1}: ${date}`;
-            let showDivider = index < surveyResponses.length - 1;
             return (
               <ListItem button divider key={response._id} onClick={this.handleClickOpen.bind(this, response)}>
                 <ListItemText primary={text} />

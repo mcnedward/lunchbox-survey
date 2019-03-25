@@ -17,10 +17,6 @@ const styles = theme => ({
 
 class SurveyForm extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { dispatch, id } = this.props;
     dispatch(getSurvey(id));

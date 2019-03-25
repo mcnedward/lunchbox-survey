@@ -8,7 +8,6 @@ import Button from "@material-ui/core/Button";
 import { withSnackbar } from 'notistack';
 import SurveyResponseOverview from './SurveyResponseOverview';
 import SurveyResponseList from './SurveyResponseList';
-import { QuestionTypes } from '../../../models/question';
 import getSurveyResponses from '../../../actions/surveyResponse/getSurveyResponsesAction';
 import getSurvey from '../../../actions/survey/getSurveyAction';
 

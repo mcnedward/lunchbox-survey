@@ -37,7 +37,7 @@ class SurveyHome extends React.Component {
   }
 
   render() {
-    let { classes, surveys } = this.props;
+    let { surveys } = this.props;
 
     if (surveys == null) surveys = [];
 
