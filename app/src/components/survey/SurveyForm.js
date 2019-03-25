@@ -8,8 +8,13 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SurveyStepper from './SurveyStepper';
 import getSurvey from "../../actions/survey/getSurveyAction";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
+  spinner: {
+    textAlign: 'center',
+    marginTop: theme.spacing.unit * 2
+  },
   btnReturn: {
     marginTop: theme.spacing.unit * 2
   }
@@ -29,13 +34,18 @@ class SurveyForm extends React.Component {
   }
 
   render() {
-    const { classes, survey, isSubmitted } = this.props;
+    const { classes, survey, isSubmitted, isLoading } = this.props;
 
     let btnReturn = (
       <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
         Return to home
       </Button>
     );
+    
+    if (isLoading) {
+      return <div className={classes.spinner}><CircularProgress/></div>;
+    }
+
     if (survey == null) {
       return (
         <div>
@@ -76,6 +86,7 @@ function mapStateToProps(state, ownProps) {
     id,
     survey: getSurveyState.survey,
     error: getSurveyState.error,
+    isLoading: getSurveyState.isLoading,
     isSubmitted: postSurveyResponseState.isSubmitted
   };
 }

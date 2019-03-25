@@ -9,8 +9,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import getSurveys from '../../actions/survey/getSurveysAction';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
+  spinner: {
+    textAlign: 'center',
+    marginTop: theme.spacing.unit * 2
+  },
   listStyle: {
     width: '100%',
     maxWidth: 360,
@@ -33,19 +38,25 @@ class SurveyorHome extends React.Component {
   }
 
   render() {
-    let { classes, surveys } = this.props;
+    let { classes, surveys, isLoading } = this.props;
 
     if (surveys == null) surveys = [];
 
-    let title = surveys.length === 0 ?
-      'You haven\'t created any surveys yet!' :
-      'Surveys created by you';
+    let title;
+    if (isLoading) {
+      title = 'Loading surveys...';
+    } else {
+      title = surveys.length === 0 ?
+        'You haven\'t created any surveys yet!' :
+        'Surveys created by you';
+    }
 
     return (
       <div>
         <Typography color="primary" variant="h4">
           {title}
         </Typography>
+        {isLoading ? <div className={classes.spinner}><CircularProgress /></div> : ''}
         <List component="nav">
           {surveys.map(survey => {
             let to = `/surveyor/surveys/${survey._id}`;
@@ -74,6 +85,7 @@ function mapStateToProps(state) {
   return {
     surveys: getSurveysState.surveys,
     error: getSurveysState.error,
+    isLoading: getSurveysState.isLoading,
     isSubmitted: getSurveysState.isSubmitted
   };
 }

@@ -9,9 +9,14 @@ import { withSnackbar } from 'notistack';
 import SurveyResponseOverview from './SurveyResponseOverview';
 import SurveyResponseList from './SurveyResponseList';
 import getSurveyResponses from '../../../actions/surveyResponse/getSurveyResponsesAction';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import getSurvey from '../../../actions/survey/getSurveyAction';
 
 const styles = theme => ({
+  spinner: {
+    textAlign: 'center',
+    marginTop: theme.spacing.unit * 2
+  },
   container: {
     minWidth: '800px'
   },
@@ -53,6 +58,7 @@ class SurveyResponse extends React.Component {
           <Typography color="primary" variant="h4" gutterBottom>
             Loading survey responses
           </Typography>
+          <div className={classes.spinner}><CircularProgress /></div>
           {btnReturn}
         </div>
       );
@@ -63,6 +69,7 @@ class SurveyResponse extends React.Component {
           <Typography color="primary" variant="h4" gutterBottom>
             Loading survey
           </Typography>
+          <div className={classes.spinner}><CircularProgress /></div>
           {btnReturn}
         </div>
       );

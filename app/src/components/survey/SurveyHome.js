@@ -8,17 +8,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withSnackbar } from 'notistack';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 import getSurveys from '../../actions/survey/getSurveysAction';
 
 const styles = theme => ({
-  padding: {
-    padding: theme.spacing.unit * 2
-  },
-  listStyle: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+  spinner: {
+    textAlign: 'center',
+    marginTop: theme.spacing.unit * 2
   }
 })
 
@@ -37,7 +33,7 @@ class SurveyHome extends React.Component {
   }
 
   render() {
-    let { surveys } = this.props;
+    let { classes, surveys, isLoading } = this.props;
 
     if (surveys == null) surveys = [];
 
@@ -50,6 +46,7 @@ class SurveyHome extends React.Component {
         <Typography color="primary" variant="h4">
           {title}
         </Typography>
+        {isLoading ? <div className={classes.spinner}><CircularProgress/></div> : ''}
         <List component="nav">
           {surveys.map(survey => {
             let to = `/survey/${survey._id}`;
