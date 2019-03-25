@@ -47,11 +47,31 @@ class SurveyResponse extends React.Component {
       </Button>
     );
 
-    if (isLoadingSurvey || isLoadingSurveyResponses) {
+    if (isLoadingSurveyResponses) {
       return (
         <div>
           <Typography color="primary" variant="h4" gutterBottom>
             Loading survey responses
+          </Typography>
+          {btnReturn}
+        </div>
+      );
+    }
+    if (isLoadingSurvey) {
+      return (
+        <div>
+          <Typography color="primary" variant="h4" gutterBottom>
+            Loading survey
+          </Typography>
+          {btnReturn}
+        </div>
+      );
+    }
+    if (survey == null) {
+      return (
+        <div>
+          <Typography color="primary" variant="h4" gutterBottom>
+            Could not find survey
           </Typography>
           {btnReturn}
         </div>
@@ -81,10 +101,10 @@ class SurveyResponse extends React.Component {
         {name}
         <Grid container spacing={32}>
           <Grid item xs={6}>
-            <SurveyResponseList survey={survey} surveyResponses={surveyResponses}/>
+            <SurveyResponseList survey={survey} surveyResponses={surveyResponses} />
           </Grid>
           <Grid item xs={6}>
-            <SurveyResponseOverview survey={survey} surveyResponses={surveyResponses}/>
+            <SurveyResponseOverview survey={survey} surveyResponses={surveyResponses} />
           </Grid>
         </Grid>
         {btnReturn}
