@@ -1,30 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { withSnackbar } from 'notistack';
+import { Link } from 'react-router-dom';
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import MobileStepper from '@material-ui/core/MobileStepper';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Icon from '@material-ui/core/Icon';
-import { withSnackbar } from 'notistack';
-import Question from "./Question";
-import { respondToSurvey } from '../../actions/surveyResponseAction';
+import SurveyStepper from './SurveyStepper';
+import getSurvey from "../../actions/survey/getSurveyAction";
 
 const styles = theme => ({
-  surveyContents: {
-    padding: theme.spacing.unit * 2
-  },
-  submit: {
-    textAlign: 'center',
-    margin: theme.spacing.unit * 2
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
-  spinner: {
-    marginTop: theme.spacing.unit
+  btnReturn: {
+    marginTop: theme.spacing.unit * 2
   }
 });
 
@@ -32,20 +19,12 @@ class SurveyForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.previousQuestion = this.previousQuestion.bind(this);
-    this.nextQuestion = this.nextQuestion.bind(this);
-    this.submit = this.submit.bind(this);
-
-    const { survey } = props;
-
-    this.state = {
-      answers: [],
-      currentQuestion: survey.questions[0],
-      currentStep: 0,
-      numberOfQuestions: survey.questions.length
-    }
   }
 
+  componentDidMount() {
+    const { dispatch, id } = this.props;
+    dispatch(getSurvey(id));
+  }
   componentDidUpdate() {
     let { error } = this.props;
     if (error) {
@@ -53,122 +32,65 @@ class SurveyForm extends React.Component {
     }
   }
 
-  previousQuestion() {
-    const { survey } = this.props;
-    let { answers, currentQuestion, currentStep } = this.state;
-
-    answers.pop();
-    currentQuestion = survey.questions[--currentStep];
-
-    this.setState({ answers, currentQuestion, currentStep });
-  }
-
-  nextQuestion() {
-    const { survey } = this.props;
-    let { answers, currentQuestion, currentStep } = this.state;
-
-    if (currentQuestion.answer == null || currentQuestion.answer === '') {
-      this.props.enqueueSnackbar('Please answer the question before moving on.', { variant: 'error' });
-      return;
-    }
-
-    let answer = {
-      questionId: currentQuestion._id,
-      answer: currentQuestion.answer
-    }
-    answers.push(answer);          // Add to answered list
-    currentQuestion = survey.questions[++currentStep];
-    currentQuestion.answer = '';
-
-    this.setState({ answers, currentQuestion, currentStep });
-  }
-
-  submit() {
-    const { dispatch, survey } = this.props;
-    let { answers, currentQuestion } = this.state;
-
-    if (currentQuestion.answer == null || currentQuestion.answer === '') {
-      this.props.enqueueSnackbar('Please answer the question before submitting.', { variant: 'error' });
-      return;
-    }
-    if (answers.length !== survey.questions.length) {
-      // Validation to ensure question is only added once when hitting submit
-      // In case error response on submit or something else like that
-      let answer = {
-        questionId: currentQuestion._id,
-        answer: currentQuestion.answer
-      }
-      answers.push(answer);
-    }
-
-    // POST
-    const surveyResponse = {
-      surveyId: survey._id,
-      name: survey.name,
-      answers
-    }
-    dispatch(respondToSurvey(surveyResponse));
-  }
-
   render() {
-    const { classes, theme, survey, isLoading } = this.props;
-    const { currentQuestion, currentStep, numberOfQuestions } = this.state;
+    const { classes, survey, isSubmitted } = this.props;
 
-    let submitButton = '';
-    if (currentStep === numberOfQuestions - 1) {
-      submitButton = (
-        <div className={classes.submit}>
-          <Button fullWidth variant="contained" color="primary" onClick={this.submit} disabled={isLoading}>
-            Submit <Icon className={classes.rightIcon}>send</Icon>
-          </Button>
-          {isLoading ? <CircularProgress className={classes.spinner} /> : ''}
+    let btnReturn = (
+      <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
+        Return to home
+      </Button>
+    );
+    let contents;
+    if (survey == null) {
+      return (
+        <div>
+          <Typography color="textPrimary" variant="h4" gutterBottom>
+            Could not find the survey
+          </Typography>
+          {btnReturn}
         </div>
       );
+    } else if (isSubmitted) {
+      contents = this.buildCompleteCard()
+    } else {
+      contents = <SurveyStepper survey={survey}></SurveyStepper>;
     }
 
     return (
       <div>
-        <div className={classes.surveyContents}>
-          <Typography color="primary" variant="h4" gutterBottom>
-            {survey.name}
-          </Typography>
-          <Typography color="textSecondary" variant="h5" gutterBottom>
-            Question #{currentStep + 1}
-          </Typography>
-          <Question question={currentQuestion} />
-
-        </div>
-
-        <MobileStepper
-          variant="progress"
-          steps={numberOfQuestions}
-          position="static"
-          activeStep={currentStep}
-          nextButton={
-            <Button size="small" onClick={this.nextQuestion} disabled={currentStep === numberOfQuestions - 1}>
-              Next
-              {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-            </Button>
-          }
-          backButton={
-            <Button size="small" onClick={this.previousQuestion} disabled={currentStep === 0}>
-              {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-              Back
-            </Button>
-          }
-        />
-        {submitButton}
+        {contents}
+        <Button component={Link} to="/" color="primary" size="small" className={classes.btnReturn}>
+          Return to home
+        </Button>
       </div>
     );
+  }
+
+  buildCompleteCard() {
+    const { survey } = this.props;
+
+    return (
+      <div>
+        <Typography color="primary" variant="h4" gutterBottom>
+          {survey.name}
+        </Typography>
+        <Typography color="textPrimary" variant="h5" gutterBottom>
+          Thank you for completing the survey!
+        </Typography>
+      </div>
+    )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const { surveyResponseState } = state;
+  const { getSurveyState, surveyResponseState } = state;
+  const { id } = ownProps.match.params;
 
   return {
-    isLoading: surveyResponseState.isLoading,
-    error: surveyResponseState.error
+    id,
+    survey: getSurveyState.survey,
+    error: getSurveyState.error,
+    isSubmitted: surveyResponseState.isSubmitted
   };
 }
 
@@ -176,4 +98,4 @@ const snackbarComp = withSnackbar(SurveyForm);
 const styledComp = withStyles(styles, { withTheme: true })(snackbarComp);
 const connectedComp = connect(mapStateToProps)(styledComp);
 
-export default connectedComp;
+export default withRouter(connectedComp);
