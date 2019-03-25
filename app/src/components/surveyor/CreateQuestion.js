@@ -30,59 +30,70 @@ class CreateQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      key: props.question.key,
+      type: QuestionTypes.Text,
+      question: '',
+      options: [],
       optionText: ''  // The text for an option if Multiple Choice is selected
     }
 
-    this.setTypeOfQuestion = this.setTypeOfQuestion.bind(this);
+    this.handleQuestionChange = this.handleQuestionChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
+    this.setTypeOfQuestion = this.setTypeOfQuestion.bind(this);
     this.addOption = this.addOption.bind(this);
     this.deleteQuestion = this.deleteQuestion.bind(this);
   }
 
   setTypeOfQuestion = event => {
-    const { question } = this.props;
-    question.type = event.target.value;
-    this.setState({ question })
+    this.setState({ type: event.target.value }, () => {
+      this.props.onChange(this.props.index, this.state);
+    });
   }
 
+  handleQuestionChange = event => {
+    this.setState({ question: event.target.value }, () => {
+      this.props.onChange(this.props.index, this.state);
+    });
+  }
   handleOptionChange = event => {
-    this.setState({
-      optionText: event.target.value
-    })
+    this.setState({ optionText: event.target.value });
   }
 
   addOption() {
-    const { question } = this.props;
     const { optionText } = this.state;
-
     if (optionText === '') {
       this.props.enqueueSnackbar('You need to add a value for the option.', { variant: 'error' });
       return;
     }
-    question.options.push(optionText);
-    this.setState({ optionText: '' });
+
+    this.setState(prevState => ({
+      options: [...prevState.options, optionText],
+      optionText: ''
+    }), () => {
+      this.props.onChange(this.props.index, this.state);
+    });
+  }
+  deleteOption(index) {
+    var options = [...this.state.options];
+    options.splice(index, 1);
+    this.setState({ options });
   }
 
   deleteQuestion() {
-    const { question, onDeleteQuestion } = this.props;
-    onDeleteQuestion(question);
+    const { index, onDeleteQuestion } = this.props;
+    onDeleteQuestion(index);
   }
 
   render() {
-    const { classes, question, number } = this.props;
+    const { classes, index } = this.props;
+    const { type } = this.state;
 
     let questionField;
-    if (question.type === QuestionTypes.Choice) {
-      questionField = this.buildMultipleChoice();
-    } else {
+    if (type === QuestionTypes.Choice) {
       questionField = (
-        <TextField
-          id="question"
-          label="Question"
-          helperText="What is your question?"
-          fullWidth
-          margin="normal"
-        />
+        <Grid item xs={12}>
+          {this.buildMultipleChoice()}
+        </Grid>
       );
     }
 
@@ -90,7 +101,7 @@ class CreateQuestion extends React.Component {
       <Paper className={classes.container}>
         <Typography color="textSecondary" variant="h5" gutterBottom>
           <Grid container justify="space-between" alignItems="center">
-            <Grid item>Question #{number}</Grid>
+            <Grid item>Question #{index + 1}</Grid>
             <Grid item>
               <IconButton aria-label="Delete" color="secondary" onClick={this.deleteQuestion}>
                 <DeleteIcon />
@@ -101,12 +112,23 @@ class CreateQuestion extends React.Component {
 
         <Grid container spacing={0}>
           <Grid item xs={12}>
+            <TextField
+              id="question"
+              label="Question"
+              helperText="What is your question?"
+              fullWidth
+              margin="normal"
+              value={this.state.question}
+              onChange={this.handleQuestionChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <FormControl component="fieldset" className={classes.marginTop}>
               <FormLabel component="legend">Type of question</FormLabel>
               <RadioGroup
                 aria-label="Type of question"
                 name="typeOfQuestion"
-                value={question.type}
+                value={type}
                 onChange={this.setTypeOfQuestion}
               >
                 <FormControlLabel
@@ -124,19 +146,23 @@ class CreateQuestion extends React.Component {
                   control={<Radio />}
                   label="True or False"
                 />
+                <FormControlLabel
+                  value={QuestionTypes.YesNo}
+                  control={<Radio />}
+                  label="Yes or No"
+                />
               </RadioGroup>
             </FormControl>
           </Grid>
-          <Grid item xs={12}>
-            {questionField}
-          </Grid>
+          {questionField}
         </Grid>
       </Paper>
     );
   }
 
   buildMultipleChoice() {
-    const { classes, question } = this.props;
+    const { classes } = this.props;
+    const { options } = this.state;
 
     return (
       <div>
@@ -144,8 +170,17 @@ class CreateQuestion extends React.Component {
           Options
         </Typography>
         <List>
-          {question.options.map((option, index) => (
-            <ListItem key={index}>{option}</ListItem>
+          {options.map((option, index) => (
+            <Grid container justify="space-between" alignItems="center" key={index}>
+              <Grid item>
+                <ListItem>{option}</ListItem>
+              </Grid>
+              <Grid item>
+                <IconButton aria-label="Delete" color="secondary" onClick={this.deleteOption.bind(this, index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
           ))}
         </List>
         <Grid container spacing={8} alignItems="flex-end">

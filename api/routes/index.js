@@ -17,6 +17,25 @@ router.get('/surveys/:id', asyncMiddleware(async (req, res) => {
   res.json(survey);
 }));
 
+router.post('/surveys', asyncMiddleware(async (req, res) => {
+  const survey = req.body;
+  if (survey == null) {
+    res.status(400);
+    return res.send('You need to provide data for the survey.');
+  }
+
+  let result = await Survey.create(survey);
+  res.json(result);
+}));
+
+router.get('/surveyresponses/:id', asyncMiddleware(async (req, res) => {
+  const id = req.params.id
+  console.log('Finding surveyResponse with id: ' + id)
+  
+  let surveyResponse = await SurveyResponse.find({ surveyId: id }).exec();
+  res.json(surveyResponse);
+}));
+
 router.post('/surveyresponses', asyncMiddleware(async (req, res) => {
   const surveyResponse = req.body;
   if (surveyResponse == null) {
@@ -26,14 +45,6 @@ router.post('/surveyresponses', asyncMiddleware(async (req, res) => {
 
   let result = await SurveyResponse.create(surveyResponse);
   res.json(result);
-}));
-
-router.get('/surveyresponses/:id', asyncMiddleware(async (req, res) => {
-  const id = req.params.id
-  console.log('Finding surveyResponse with id: ' + id)
-
-  let surveyResponse = await SurveyResponse.find({ surveyId: id }).exec();
-  res.json(surveyResponse);
 }));
 
 module.exports = router;

@@ -1,13 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import Typography from "@material-ui/core/Typography";
-import TextResponse from './TextResponse';
-import ChoiceResponse from './ChoiceResponse';
-import BoolResponse from './BoolResponse';
-import { QuestionTypes } from '../../models/question';
 import Button from "@material-ui/core/Button";
 import { withSnackbar } from 'notistack';
 import getSurveyResponses from '../../actions/getSurveyResponsesAction';
@@ -35,7 +30,7 @@ class SurveyResponse extends React.Component {
   }
 
   render() {
-    let { classes, surveyResponses, isLoading } = this.props;
+    let { classes, surveyResponses } = this.props;
 
     if (surveyResponses == null || surveyResponses.length === 0) {
       return (

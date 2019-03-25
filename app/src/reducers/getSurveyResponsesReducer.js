@@ -8,13 +8,15 @@ export function getSurveyResponsesState(state = {}, action) {
   switch (action.type) {
     case GET_SURVEY_RESPONSES_REQUEST:
       return Object.assign({}, state, {
-        isLoading: true
+        isLoading: true,
+        error: null
       });
 
     case GET_SURVEY_RESPONSES_SUCCESS:
       return Object.assign({}, state, {
         surveyResponses: action.data,
-        isLoading: false
+        isLoading: false,
+        error: null
       });
 
     case GET_SURVEY_RESPONSES_ERROR:
