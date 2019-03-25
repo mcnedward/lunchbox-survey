@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { withSnackbar } from 'notistack';
+import TextResponse from './TextResponse';
+import { QuestionTypes } from '../../models/question';
 import getSurveyResponses from '../../actions/surveyResponse/getSurveyResponsesAction';
 import getSurvey from '../../actions/survey/getSurveyAction';
 
@@ -37,7 +39,7 @@ class SurveyResponse extends React.Component {
 
     let btnReturn = (
       <Button component={Link} to="/surveyor" color="primary" size="small" className={classes.btnReturn}>
-          Back
+        Back
       </Button>
     );
 
@@ -70,23 +72,47 @@ class SurveyResponse extends React.Component {
       );
     }
 
+    let questionMap = {};
+    for (let i = 0; i < survey.questions.length; i++) {
+      let question = survey.questions[i];
+      questionMap[question._id] = {
+        id: question._id,
+        number: i + 1,
+        type: question.type,
+        question: question.question,
+        answers: []
+      };
+    }
+
+    for (let response of surveyResponses) {
+      for (let answer of response.answers) {
+        let questionId = answer.questionId;
+        let question = questionMap[questionId];
+        question.answers.push(answer.answer);
+      }
+    }
+
+    let questions = Object.values(questionMap).sort((a, b) => a.number - b.number);
+    
     return (
       <div>
         {name}
-        {/* {survey.answeredQuestions.map((question, index) => {
+        {questions.map((question, index) => {
           if (question.type === QuestionTypes.Text) {
-            return <TextResponse question={question} number={index + 1} key={index} />
-          } else if (question.type === QuestionTypes.Choice) {
-            return <ChoiceResponse question={question} number={index + 1} key={index} />
-          } else if (question.type === QuestionTypes.Bool) {
-            return <BoolResponse question={question} number={index + 1} key={index} />
-          } else {
-            return <div>Could not find the question...</div>
+            return <TextResponse question={question} key={question.id} />
           }
-        })} */}
+          else {
+            return <div key={index}>Could not find the question...</div>
+          }
+        })}
         {btnReturn}
       </div>
     )
+    //  {/* else if (question.type === QuestionTypes.Choice) {
+    //   return <ChoiceResponse question={question} number={index + 1} key={index} />
+    // } else if (question.type === QuestionTypes.Bool) {
+    //   return <BoolResponse question={question} number={index + 1} key={index} />
+    // } */}
   }
 }
 

@@ -20,17 +20,17 @@ const styles = theme => ({
 class TextResponse extends React.Component {
 
   render() {
-    let { classes, question, number } = this.props;
+    let { classes, question } = this.props;
 
     return (
       <div className={classes.container}>
-        <Typography color="textSecondary" variant="h6" className={classes.padding}>
-          Question #{number} - {question.question}
+        <Typography color="textPrimary" variant="h5" className={classes.padding}>
+          #{question.number} {question.question}
         </Typography>
 
         <div className={classes.responseList}>
           <List>
-            {question.responses.map((response, index) => (
+            {question.answers.map((response, index) => (
               <div key={index}>
                 <ListItem>
                   <ListItemText primary={response} />
